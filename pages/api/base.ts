@@ -3,7 +3,7 @@ import path from "path";
 import knex from "knex";
 
 export default function handler(req: NextApiRequest, res: NextApiResponse) {
-  const dbPath = path.resolve("db/testdb1.db");
+  const dbPath = path.resolve("db/mdb.db");
   const db = knex({
     client: "sqlite3",
     connection: {
