@@ -15,7 +15,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).json(result)
     }
     case Actions.Delete: {
-      const result = await Database.Delete({ id, name, type, cost });
+      const result = await Database.Delete({ id });
       return res.status(200).json(result)
     }
     default:

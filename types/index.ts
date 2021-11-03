@@ -6,8 +6,8 @@ export enum Actions {
 }
 export interface RecordInput {
     id?: string,
-    name: string,
-    type: string,
+    name?: string,
+    type?: string,
     cost?: string,
 }
 export interface BaseApiInput {
