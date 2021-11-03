@@ -11,7 +11,7 @@
 # sql
 db/*.sqlite
 db/*.sqbpro
-
+db/mdbt.db
 # next.js
 /.next/
 /out/

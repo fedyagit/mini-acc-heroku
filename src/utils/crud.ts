@@ -2,8 +2,10 @@ import path from "path";
 import knex from "knex";
 import { Message, RecordInput } from "types";
 
+const isTest = process.env.NODE_ENV === 'test';
+
 const OpenConnection = () => {
-  const dbPath = path.resolve("db/mdb.db");
+  const dbPath = isTest ? path.resolve("db/mdbt.db") : path.resolve("db/mdb.db");
   const db = knex({
     client: "sqlite3",
     connection: {
@@ -66,7 +68,7 @@ export const GetById = async ({
 };
 
 export const Insert = async ({ id, name, type, cost }: RecordInput) => {
-  const record = await GetItem({ id, name, type, cost }).then((data) => {
+  const record = await GetItem({name, type}).then((data) => {
     return data;
   });
   if (!Array.isArray(record)) return record;
@@ -87,8 +89,8 @@ const InsertRecord = async ({
       Type: type,
       Cost: cost,
     })
-    .then(() => {
-      return { message: "Insert: Success" };
+    .then((data) => {
+      return { message: `Insert: Success, ID:${data}`, id: String(data) };
     })
     .catch((err) => {
       return { message: `There was an error in Insert operation: ${err}` };
@@ -104,14 +106,14 @@ export const Update = async ({
 }: RecordInput): Promise<Message> => {
   const db = OpenConnection();
   const result: Message = await db("Items")
-    .where("Id", parseInt(id))
+    .where("Id", id)
     .update({
       Name: name,
       Type: type,
       Cost: cost,
     })
-    .then(() => {
-      return { message: "Update: Success" };
+    .then((data) => {
+      return { message: `Update: Success, ${data} items were affected` };
     })
     .catch((err) => {
       return { message: `There was an error in Update operation: ${err}` };
@@ -124,8 +126,8 @@ export const Delete = async ({ id }: RecordInput): Promise<Message> => {
   const result: Message = await db("Items")
     .where("Id", id)
     .delete()
-    .then(() => {
-      return { message: "Delete: Success" };
+    .then((data) => {
+      return { message: `Delete: Success, ${data} items were affected` };
     })
     .catch((err) => {
       return { message: `There was an error in Delete operation: ${err}` };

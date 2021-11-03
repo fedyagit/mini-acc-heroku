@@ -2,21 +2,21 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { Database } from "@utils";
 import { BaseApiInput, Actions, RecordInput } from "types";
 
-const handler = (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { action } = req.query;
   const { id, name, type, cost }: RecordInput = req.body;
   switch (action) {
     case Actions.Get: {
-      const result = Database.Get();
-      return result.then((data) => res.status(200).json(data));
+      const result = await Database.Get();
+      return res.status(200).json(result);
     }
     case Actions.Insert: {
-      const result = Database.Insert({ id, name, type, cost });
-      return result.then((data) => res.status(200).json(data));
+      const result = await Database.Insert({ id, name, type, cost });
+      return res.status(200).json(result)
     }
     case Actions.Delete: {
-      const result = Database.Delete({ id, name, type, cost });
-      return result.then((data) => res.status(200).json(data));
+      const result = await Database.Delete({ id, name, type, cost });
+      return res.status(200).json(result)
     }
     default:
       return res
