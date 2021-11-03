@@ -5,7 +5,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "jest --verbose"
   },
   "dependencies": {
     "knex": "^0.95.12",
@@ -13,13 +14,15 @@
     "path": "^0.12.7",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "ts-node": "^10.4.0"
   },
   "devDependencies": {
     "@types/node": "16.11.6",
     "@types/react": "17.0.33",
     "eslint": "7",
     "eslint-config-next": "12.0.2",
+    "jest": "^27.3.1",
     "typescript": "4.4.4"
   }
 }

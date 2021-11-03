@@ -5,12 +5,10 @@ export enum Actions {
     Delete = 'Delete',
 }
 export interface RecordInput {
+    id: string,
     name: string,
     type: string,
     cost: string,
-}
-export interface RecordOutput extends RecordInput {
-    id: number,
 }
 export interface BaseApiInput {
     action: Actions,
