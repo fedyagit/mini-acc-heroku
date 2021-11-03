@@ -6,7 +6,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --verbose"
+    "test": "cross-env NODE_ENV=test copyfiles --flat ./__tests__/mdbt.db ./db && jest --verbose --detectOpenHandles"
   },
   "dependencies": {
     "knex": "^0.95.12",
@@ -18,11 +18,15 @@
     "ts-node": "^10.4.0"
   },
   "devDependencies": {
+    "@types/jest": "^27.0.2",
     "@types/node": "16.11.6",
     "@types/react": "17.0.33",
+    "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3",
     "eslint": "7",
     "eslint-config-next": "12.0.2",
     "jest": "^27.3.1",
+    "ts-jest": "^27.0.7",
     "typescript": "4.4.4"
   }
 }
