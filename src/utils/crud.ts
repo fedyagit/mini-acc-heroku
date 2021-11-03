@@ -39,7 +39,7 @@ const GetItem = async ({
     .select("*")
     .from("Items")
     .where(function () {
-      this.where("Name", name).andWhere("Type", type);
+      this.where("name", name).andWhere("type", type);
     })
     .then((data) => {
       return data;
@@ -57,7 +57,7 @@ export const GetById = async ({
   const result: RecordInput[] | Message = await db
     .select("*")
     .from("Items")
-    .where("Id", id)
+    .where("id", id)
     .then((data) => {
       return data;
     })
@@ -106,7 +106,7 @@ export const Update = async ({
 }: RecordInput): Promise<Message> => {
   const db = OpenConnection();
   const result: Message = await db("Items")
-    .where("Id", id)
+    .where("id", id)
     .update({
       Name: name,
       Type: type,
@@ -124,7 +124,7 @@ export const Update = async ({
 export const Delete = async ({ id }: RecordInput): Promise<Message> => {
   const db = OpenConnection();
   const result: Message = await db("Items")
-    .where("Id", id)
+    .where("id", id)
     .delete()
     .then((data) => {
       return { message: `Delete: Success, ${data} items were affected` };
