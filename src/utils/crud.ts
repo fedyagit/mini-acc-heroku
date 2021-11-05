@@ -2,10 +2,12 @@ import path from "path";
 import knex from "knex";
 import { Message, RecordInput } from "types";
 
-const isTest = process.env.NODE_ENV === 'test';
+const isTest = process.env.NODE_ENV === "test";
 
 const OpenConnection = () => {
-  const dbPath = isTest ? path.resolve("db/mdbt.db") : path.resolve("db/mdb.db");
+  const dbPath = isTest
+    ? path.resolve("db/mdbt.db")
+    : path.resolve("db/mdb.db");
   const db = knex({
     client: "sqlite3",
     connection: {
@@ -68,7 +70,7 @@ export const GetById = async ({
 };
 
 export const Insert = async ({ id, name, type, cost }: RecordInput) => {
-  const record = await GetItem({name, type}).then((data) => {
+  const record = await GetItem({ name, type }).then((data) => {
     return data;
   });
   if (!Array.isArray(record)) return record;
