@@ -1,11 +1,13 @@
 import { NextPage } from "next";
+import EditContent from "src/components/EditContent";
 import MainLayout from "src/layouts/MainLayout";
 
 const Edit: NextPage = () => {
   return (
     <>
-      <MainLayout />
-      <div> Edit Page</div>
+      <MainLayout>
+        <EditContent />
+      </MainLayout>
     </>
   );
 };
