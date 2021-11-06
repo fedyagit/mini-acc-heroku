@@ -1,12 +1,13 @@
 import { NextPage } from "next";
-import HomeContent from "src/components/HomeResults";
 import MainLayout from "src/layouts/MainLayout";
 
 const Home: NextPage = () => {
   return (
     <>
       <MainLayout>
-        <HomeContent />
+        <div className="h-96 flex items-center justify-center uppercase">
+          <p>Welcome to ours mini accounter</p>
+        </div>
       </MainLayout>
     </>
   );

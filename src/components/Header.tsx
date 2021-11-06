@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 const pages: page[] = [
   {
     title: "Меню",
-    path: "home",
+    path: "menu",
   },
   {
     title: "Змінити меню",
@@ -36,12 +36,12 @@ const Header: FunctionComponent = () => {
   const currentPath = router.asPath;
 
   return (
-    <nav className="bg-gray-800">
+    <nav className="bg-black">
       <div className="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
         <div className="relative flex items-center justify-between h-16">
           <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
             <Link href="/home">
-              <div className="flex-shrink-0 cursor-pointer uppercase text-white border-b font-mono flex items-center">
+              <div className="flex-shrink-0 cursor-pointer uppercase text-gray-300 hover:text-white border-b font-mono flex items-center">
                 Смачна зустріч
               </div>
             </Link>
@@ -66,8 +66,8 @@ const NavItems: FC<NavProps> = ({ pages, currentPath }) => (
         <span
           className={
             currentPath === "/" + path
-              ? "bg-gray-900 cursor-pointer text-white px-3 py-2 rounded-md text-sm font-medium"
-              : "text-gray-300 cursor-pointer hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+              ? "bg-white cursor-pointer text-black px-3 py-2 rounded-md text-sm font-medium"
+              : "text-gray-300 cursor-pointer hover:bg-black hover:text-white px-3 py-2 rounded-md text-sm font-medium"
           }
         >
           {title}
