@@ -68,6 +68,12 @@ describe("Crud", () => {
     ];
     expect(result).toEqual(expect.arrayContaining(mock));
   });
+  test(`Crud ${Actions.GetTypes}`, async () => {
+    const typeMock = [{type: "Напої"}, {type: "Перша страва"}];
+    const result = await Database.GetTypes();
+    expect(Array.isArray(result)).toBeTruthy;
+    expect(result).toEqual(expect.arrayContaining(typeMock));
+  });
   test(`Crud ${Actions.GetById}`, async () => {
     const id = "3";
     const result = await Database.GetById({ id: id });
