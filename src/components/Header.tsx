@@ -5,19 +5,19 @@ import { useRouter } from "next/router";
 const pages: page[] = [
   {
     title: "Меню",
-    path: "/home",
+    path: "home",
   },
   {
     title: "Змінити меню",
-    path: "/edit",
+    path: "edit",
   },
   {
     title: "Історія",
-    path: "/history",
+    path: "history",
   },
   {
     title: "Підсумок дня",
-    path: "/daily-results",
+    path: "daily-results",
   },
 ];
 
@@ -61,19 +61,18 @@ export default Header;
 
 const NavItems: FC<NavProps> = ({ pages, currentPath }) => (
   <>
-    {pages &&
-      pages.map(({ title, path }, index) => (
-        <Link href={`/${path}`} key={index}>
-          <span
-            className={
-              currentPath === path
-                ? "bg-gray-900 cursor-pointer text-white px-3 py-2 rounded-md text-sm font-medium"
-                : "text-gray-300 cursor-pointer hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
-            }
-          >
-            {title}
-          </span>
-        </Link>
-      ))}
+    {pages?.map(({ title, path }, index) => (
+      <Link href={`/${path}`} key={index}>
+        <span
+          className={
+            currentPath === "/" + path
+              ? "bg-gray-900 cursor-pointer text-white px-3 py-2 rounded-md text-sm font-medium"
+              : "text-gray-300 cursor-pointer hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+          }
+        >
+          {title}
+        </span>
+      </Link>
+    ))}
   </>
 );

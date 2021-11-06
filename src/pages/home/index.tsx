@@ -1,12 +1,13 @@
 import { NextPage } from "next";
+import HomeContent from "src/components/HomeResults";
 import MainLayout from "src/layouts/MainLayout";
-import Header from "../../components/Header";
 
 const Home: NextPage = () => {
   return (
     <>
-      <MainLayout />
-      <div>Home Page</div>
+      <MainLayout>
+        <HomeContent />
+      </MainLayout>
     </>
   );
 };
