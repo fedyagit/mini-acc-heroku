@@ -69,6 +69,23 @@ export const GetById = async ({
   return result;
 };
 
+export const GetByType = async ({
+  type,
+}: RecordInput): Promise<RecordInput[] | Message> => {
+  const db = OpenConnection();
+  const result: RecordInput[] | Message = await db
+    .select("*")
+    .from("Items")
+    .where("type", type)
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      return { message: `There was an error in retrieving data: ${err}` };
+    });
+  return result;
+};
+
 export const Insert = async ({ id, name, type, cost }: RecordInput) => {
   const record = await GetItem({ name, type }).then((data) => {
     return data;
