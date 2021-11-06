@@ -1,5 +1,7 @@
 export enum Actions {
     Get = 'Get',
+    GetById = 'GetById',
+    GetByType = 'GetByType',
     Insert = 'Insert',
     Update = 'Update',
     Delete = 'Delete',
@@ -10,9 +12,10 @@ export interface RecordInput {
     type?: string,
     cost?: string,
 }
-export interface BaseApiInput {
-    action: Actions,
-    data: RecordInput,
+export type Action = {
+    action: string,
+}
+export interface BaseApiInput extends Action, RecordInput {
 }
 export interface Message {
     message: string;

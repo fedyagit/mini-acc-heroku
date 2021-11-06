@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Database } from "@utils";
-import { BaseApiInput, Actions, RecordInput } from "types";
+import { Actions, RecordInput } from "types";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { action } = req.query;
@@ -8,6 +8,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   switch (action) {
     case Actions.Get: {
       const result = await Database.Get();
+      return res.status(200).json(result);
+    }
+    case Actions.GetById: {
+      const result = await Database.GetById({ id });
+      return res.status(200).json(result);
+    }
+    case Actions.GetByType: {
+      const result = await Database.GetByType({ type });
       return res.status(200).json(result);
     }
     case Actions.Insert: {

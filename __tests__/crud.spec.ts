@@ -24,7 +24,64 @@ describe("Crud", () => {
     expect(result).toEqual(expect.arrayContaining(mock));
     expect(result).not.toEqual(expect.arrayContaining(wrongMock));
   });
-
+  test(`Crud ${Actions.GetByType}`, async () => {
+    const mockType = "Перша страва";
+    const result = await Database.GetByType({ type: mockType });
+    expect(Array.isArray(result)).toBeTruthy;
+    const mock = [
+      {
+        id: 3,
+        name: "Суп",
+        type: "Перша страва",
+        cost: "12000",
+      },
+      {
+        id: 4,
+        name: "Суп2",
+        type: "Перша страва",
+        cost: "13000",
+      },
+      {
+        id: 5,
+        name: "Суп3",
+        type: "Перша страва",
+        cost: "14000",
+      },
+      {
+        id: 6,
+        name: "Суп4",
+        type: "Перша страва",
+        cost: "15000",
+      },
+      {
+        id: 7,
+        name: "Суп5",
+        type: "Перша страва",
+        cost: "21000",
+      },
+      {
+        id: 9,
+        name: "Суп6",
+        type: "Перша страва",
+        cost: "22000",
+      },
+    ];
+    expect(result).toEqual(expect.arrayContaining(mock));
+  });
+  test(`Crud ${Actions.GetById}`, async () => {
+    const id = "3";
+    const result = await Database.GetById({ id: id });
+    expect(Array.isArray(result)).toBeTruthy;
+    const mock = [
+      {
+        id: 3,
+        name: "Суп",
+        type: "Перша страва",
+        cost: "12000",
+      },
+    ];
+    expect(result).toEqual(expect.arrayContaining(mock));
+  });
   test(`Crud ${Actions.Insert}`, async () => {
     const insertMock = {
       name: "Торт",

@@ -1,7 +1,8 @@
-import { Get, GetById, Delete, Update, Insert } from "./crud";
+import { Get, GetById, GetByType, Delete, Update, Insert } from "./crud";
 export const Database = {
   Get,
   GetById,
+  GetByType,
   Delete,
   Update,
   Insert,
