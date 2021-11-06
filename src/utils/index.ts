@@ -6,7 +6,7 @@ export const Database = {
   Update,
   Insert,
 };
-import { Sf } from "./print";
-export const Print = {
-  Sf,
+import { createCheck } from "./check";
+export const Check = {
+  createCheck,
 };

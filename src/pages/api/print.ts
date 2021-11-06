@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Print } from "@utils";
+import { Check } from "@utils";
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-     Print.Sf();
+     Check.createCheck();
       return res
         .status(200)
         .json({ message: `OK` });

@@ -3,7 +3,7 @@ import { jsPDF } from "jspdf";
 import open from "open";
 import "../fonts/typewriter";
 
-export const Sf = async () => {
+export const createCheck = async () => {
   var doc = new jsPDF("p", "mm", [58, 210]);
   doc.setFont("TypeWriter");
   let step = 10;
