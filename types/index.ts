@@ -2,6 +2,7 @@ export enum Actions {
     Get = 'Get',
     GetById = 'GetById',
     GetByType = 'GetByType',
+    GetTypes = 'GetTypes',
     Insert = 'Insert',
     Update = 'Update',
     Delete = 'Delete',
