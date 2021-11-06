@@ -32,6 +32,21 @@ export const Get = async (): Promise<RecordInput[] | Message> => {
   return result;
 };
 
+export const GetTypes = async (): Promise<RecordInput[] | Message> => {
+  const db = OpenConnection();
+  const result: RecordInput[] | Message = await db
+    .select("type")
+    .distinct()
+    .from("Items")
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      return { message: `There was an error in retrieving data: ${err}` };
+    });
+  return result;
+};
+
 const GetItem = async ({
   name,
   type,
