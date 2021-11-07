@@ -53,7 +53,17 @@ const CalculateCheckHeight = (check: any) => {
         wrapWidth
       ).length;
   });
-  return (checkHeight += 16);
+  return (checkHeight += 20);
+};
+
+const getTotal = (check: any) => {
+  let total = 0;
+  check.itemsFromTrans.map((item: string, index: number) => {
+    total += strToNum(check.costsFromTrans[index]) *
+    strToNum(check.sizesFromTrans[index])
+  });
+  total *= 100;
+  return (total.toFixed(2));
 };
 
 const addHeader = (doc: jsPDF, id: string | null) => {
@@ -196,7 +206,10 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
             doc.text(str, 56, (step += heightStep), { align: "right" });
           });
       });
+      const total = getTotal(formatedCheck);
       const dates = getName(formatedCheck.dateFromTrans);
+      doc.text("ВСЬОГО:", 2, (step += heightStep));
+      doc.text(total, 56, step, { align: "right" });
       doc.text("ДЯКУЄМО ЗА ПОКУПКУ", 29, (step += heightStep * 2), {
         align: "center",
       });
