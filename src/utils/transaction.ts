@@ -53,7 +53,7 @@ const CalculateCheckHeight = (check: any) => {
         wrapWidth
       ).length;
   });
-  return (checkHeight += 4);
+  return (checkHeight += 16);
 };
 
 const addHeader = (doc: jsPDF, id: string | null) => {
