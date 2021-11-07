@@ -8,7 +8,10 @@ export const Database = {
   Update,
   Insert,
 };
-import { createCheck } from "./check";
-export const Check = {
-  createCheck,
+import { AddTransaction, GetTransactionById, GetTransactionsByToday, PrintCheck } from "./transaction";
+export const Transaction = {
+  AddTransaction,
+  GetTransactionById,
+  GetTransactionsByToday,
+  PrintCheck,
 };
