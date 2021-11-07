@@ -4,10 +4,7 @@ import { MENU_ACTION_TYPES } from "src/contexts/menuContext/menu.actions";
 import { RecordInput } from "types";
 
 const MenuItems: FC<RecordInput> = ({ type, name, cost, id }) => {
-  const {
-    state: { selectedItems },
-    dispatch,
-  } = useContext(MenuContext);
+  const { dispatch } = useContext(MenuContext);
 
   return (
     <div
@@ -23,7 +20,7 @@ const MenuItems: FC<RecordInput> = ({ type, name, cost, id }) => {
           },
         });
       }}
-      className="m-2 shadow-inner hover:shadow-lg rounded-2xl cursor-pointer w-64 h-32 p-4 bg-white overflow-hidden"
+      className="m-2 shadow-md hover:shadow-xl transition ease-in duration-200 rounded-2xl cursor-pointer w-64 h-32 p-4 bg-white overflow-hidden"
     >
       <div className="w-4/6">
         <p className="text-gray-400 text-xs">{type}</p>

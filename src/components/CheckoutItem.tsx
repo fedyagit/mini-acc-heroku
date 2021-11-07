@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useContext, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect } from "react";
 import { MenuContext } from "src/contexts/menuContext";
 import { MENU_ACTION_TYPES } from "src/contexts/menuContext/menu.actions";
 import { IMenuItem } from "types";
@@ -35,7 +35,10 @@ const CheckoutItem: FC<IMenuItem> = ({ id, cost, count, type, name }) => {
   }, [count]);
 
   return (
-    <li id={id} className="border-gray-400 mx-1 relative flex flex-row mb-2">
+    <li
+      id={id}
+      className="border-gray-400 shadow-md hover:shadow-xl transition ease-in duration-200 mx-1 relative flex flex-row mb-2"
+    >
       <button
         onClick={() => {
           dispatch({
