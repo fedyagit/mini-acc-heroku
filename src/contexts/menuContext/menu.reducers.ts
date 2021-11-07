@@ -51,7 +51,7 @@ export const MenuReducer = (
               cost: cost,
               id: id,
               count:
-                action.data.name === name
+                action.data.id === id
                   ? action.key === "inc"
                     ? count + 1
                     : count - 1
@@ -59,6 +59,12 @@ export const MenuReducer = (
             };
           }
         ),
+      };
+
+    case MENU_ACTION_TYPES.REMOVE_ALL_SELECTED_ITEMS:
+      return {
+        ...state,
+        selectedItems: [],
       };
 
     default:
