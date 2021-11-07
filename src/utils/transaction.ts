@@ -115,7 +115,7 @@ const CalculateCheckHeight = (check: any) => {
   return (checkHeight += 4);
 };
 
-const addHeader = (doc: jsPDF, id: number) => {
+const addHeader = (doc: jsPDF, id: string) => {
   doc.text("СМАЧНА ЗУСТРІЧ", 29, 8, {
     align: "center",
   });
@@ -145,7 +145,7 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
       doc.setFont("TypeWriter");
       doc.setFontSize(12);
       let step = headerHeight;
-      addHeader(doc, 1);
+      addHeader(doc, id);
       formatedCheck.itemsFromTrans.map((item: string, index: number) => {
         doc.splitTextToSize(item, wrapWidth).map((str: string) => {
           doc.text(str, 2, (step += heightStep));
