@@ -1,57 +1,28 @@
-import React, { FC, useContext, useEffect } from "react";
-import { MenuContext } from "src/contexts/menuContext";
-import { MENU_ACTION_TYPES } from "src/contexts/menuContext/menu.actions";
+import React, { FC } from "react";
 import { IMenuItem } from "types";
+import DialogComponent from "../Dialog";
+import useCheckoutItem from "./useCheckoutItem";
 
-const CheckoutItem: FC<IMenuItem> = ({ id, cost, count, type, name }) => {
-  const { dispatch } = useContext(MenuContext);
-
-  const handleChangeCountOfItems = (key: string) => {
-    dispatch({
-      type: MENU_ACTION_TYPES.CHANGE_COUNT_OF_SELECTED_ITEMS,
-      data: {
-        type: type,
-        name: name,
-        cost: cost,
-        id: id,
-        count: count,
-      },
-      key: key,
-    });
-  };
-
-  useEffect(() => {
-    if (!count)
-      dispatch({
-        type: MENU_ACTION_TYPES.REMOVE_SELECTED_MENU_ITEM,
-        data: {
-          type: type,
-          name: name,
-          cost: cost,
-          id: id,
-          count: count,
-        },
-      });
-  }, [count]);
-
+const CheckoutItem: FC<IMenuItem> = ({ id, cost, count, name, type }) => {
+  const {
+    handleRemoveItem,
+    openRemoveItemModal,
+    handleOpenRemoveItemModal,
+    handleChangeCountOfItems,
+  } = useCheckoutItem({ id, cost, count, name, type });
   return (
     <li
-      id={id}
+      key={id}
       className="border-gray-400 shadow-md hover:shadow-xl transition ease-in duration-200 mx-1 relative flex flex-row mb-2"
     >
+      <DialogComponent
+        text={`Видалити ${name} в кількості ${count} шт.?`}
+        submitAction={handleRemoveItem}
+        isOpen={openRemoveItemModal}
+        closeModal={handleOpenRemoveItemModal}
+      />
       <button
-        onClick={() => {
-          dispatch({
-            type: MENU_ACTION_TYPES.REMOVE_SELECTED_MENU_ITEM,
-            data: {
-              type: type,
-              name: name,
-              cost: cost,
-              id: id,
-              count: count,
-            },
-          });
-        }}
+        onClick={handleOpenRemoveItemModal}
         className="h-6 w-6 text-red-500 absolute right-0 top-0"
       >
         <svg
@@ -101,13 +72,14 @@ const CheckoutItem: FC<IMenuItem> = ({ id, cost, count, type, name }) => {
             stroke="currentColor"
           >
             <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
               d="M18 12H6"
             />
           </svg>
           <input
+            readOnly
             value={count}
             className="px-2 py-1 placeholder-blueGray-300 text-blueGray-600 relative bg-white rounded text-sm border-0 shadow outline-none focus:outline-none focus:ring w-full"
           />
