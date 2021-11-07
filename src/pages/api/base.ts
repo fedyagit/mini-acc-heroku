@@ -22,6 +22,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const result = await Database.GetTypes();
       return res.status(200).json(result);
     }
+    case Actions.AddType: {
+      const result = await Database.AddTypes({type});
+      return res.status(200).json(result);
+    }
     case Actions.Insert: {
       const result = await Database.Insert({ id, name, type, cost });
       return res.status(200).json(result)
