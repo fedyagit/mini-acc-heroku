@@ -36,8 +36,7 @@ export const GetTypes = async (): Promise<RecordInput[] | Message> => {
   const db = OpenConnection();
   const result: RecordInput[] | Message = await db
     .select("type")
-    .distinct()
-    .from("Items")
+    .from("Types")
     .then((data) => {
       return data;
     })
