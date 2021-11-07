@@ -9,6 +9,7 @@ import fs from 'fs';
 const headerHeight = 16;
 const wrapWidth = 58;
 const heightStep = 4;
+const isTest = process.env.NODE_ENV === "test";
 
 const getName = (date: Array<string>): CheckDate => {
   return {
@@ -23,8 +24,6 @@ const strToNum = (str: string): number => {
   return Math.round(Number(str)) / 100;
 };
 
-const isTest = process.env.NODE_ENV === "test";
-
 const OpenConnection = () => {
   const dbPath = isTest
     ? path.resolve("db/mdbt.db")
@@ -37,6 +36,33 @@ const OpenConnection = () => {
     useNullAsDefault: true,
   });
   return db;
+};
+
+const CalculateCheckHeight = (check: any) => {
+  let checkHeight = headerHeight;
+  const doc = new jsPDF();
+  check.itemsFromTrans.map((item: string, index: number) => {
+    checkHeight += heightStep * doc.splitTextToSize(item, wrapWidth).length;
+    checkHeight +=
+      heightStep *
+      doc.splitTextToSize(
+        `${check.costsFromTrans[index]}x${check.sizesFromTrans[index]}=${(
+          strToNum(check.costsFromTrans[index]) *
+          Number(check.sizesFromTrans[index])
+        ).toFixed(2)}`,
+        wrapWidth
+      ).length;
+  });
+  return (checkHeight += 4);
+};
+
+const addHeader = (doc: jsPDF, id: string | null) => {
+  doc.text("СМАЧНА ЗУСТРІЧ", 29, 8, {
+    align: "center",
+  });
+  doc.text("################", 29, 12, { align: "center" });
+  if (id) doc.text(`ЧЕК N ${id}`, 29, 16, { align: "center" });
+  return doc;
 };
 
 export const GetTransactionById = async ({
@@ -56,6 +82,7 @@ export const GetTransactionById = async ({
     });
   return result;
 };
+
 export const GetTransactionsByToday = async ({
   transactionDate,
 }: TransactionInput): Promise<TransactionInput[] | Message> => {
@@ -94,33 +121,6 @@ export const AddTransaction = async ({
       return { message: `There was an error in Insert operation: ${err}` };
     });
   return result;
-};
-
-const CalculateCheckHeight = (check: any) => {
-  let checkHeight = headerHeight;
-  const doc = new jsPDF();
-  check.itemsFromTrans.map((item: string, index: number) => {
-    checkHeight += heightStep * doc.splitTextToSize(item, wrapWidth).length;
-    checkHeight +=
-      heightStep *
-      doc.splitTextToSize(
-        `${check.costsFromTrans[index]}x${check.sizesFromTrans[index]}=${(
-          strToNum(check.costsFromTrans[index]) *
-          Number(check.sizesFromTrans[index])
-        ).toFixed(2)}`,
-        wrapWidth
-      ).length;
-  });
-  return (checkHeight += 4);
-};
-
-const addHeader = (doc: jsPDF, id: string | null) => {
-  doc.text("СМАЧНА ЗУСТРІЧ", 29, 8, {
-    align: "center",
-  });
-  doc.text("################", 29, 12, { align: "center" });
-  if (id) doc.text(`ЧЕК N ${id}`, 29, 16, { align: "center" });
-  return doc;
 };
 
 export const PrintCheck = async ({ id }: TransactionInput) => {
@@ -182,30 +182,3 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
     }
   }
 };
-
-// export const CreateCheck = async () => {
-
-//   const s = "Торт. Вишн. Торт. Вишн. Торт. Вишн. Торт. Вишн. Торт. Вишн.";
-
-//   doc.splitTextToSize(s, 58).map((str: string) => {
-//     doc.text(str, 2, (step += 4));
-//   });
-//   doc.text("1040.00х0.1=1005.00", 56, (step += 4), { align: "right" });
-//   doc.text("Кофе. Якобс.", 2, (step += 4));
-//   doc.text("40.00х0.1=4.00", 56, (step += 4), { align: "right" });
-//   doc.text("Торт. Вишн.", 2, (step += 4));
-//   doc.text("1040.00х0.1=1005.00", 56, (step += 4), { align: "right" });
-//   doc.text("Кофе. Якобс.", 2, (step += 4));
-//   doc.text("40.00х0.1=4.00", 56, (step += 4), { align: "right" });
-//   doc.text("Торт. Вишн.", 2, (step += 4));
-//   doc.text("1040.00х0.1=1005.00", 56, (step += 4), { align: "right" });
-//   doc.text("Кофе. Якобс.", 2, (step += 4));
-//   doc.text("40.00х0.1=4.00", 56, (step += 4), { align: "right" });
-//   doc.text("Торт. Вишн.", 2, (step += 4));
-//   doc.text("1040.00х0.1=1005.00", 56, (step += 4), { align: "right" });
-//   doc.text("Кофе. Якобс.", 2, (step += 4));
-//   doc.text("40.00х0.1=4.00", 56, (step += 4), { align: "right" });
-//   const name = getName();
-//   doc.save(name);
-//   open(name);
-// };

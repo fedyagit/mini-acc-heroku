@@ -24,6 +24,20 @@ describe("Crud", () => {
     expect(result).toEqual(expect.arrayContaining(mock));
     expect(result).not.toEqual(expect.arrayContaining(wrongMock));
   });
+  test(`Crud ${Actions.GetById}`, async () => {
+    const id = "3";
+    const result = await Database.GetById({ id: id });
+    expect(Array.isArray(result)).toBeTruthy;
+    const mock = [
+      {
+        id: 3,
+        name: "Суп",
+        type: "Перша страва",
+        cost: "12000",
+      },
+    ];
+    expect(result).toEqual(expect.arrayContaining(mock));
+  });
   test(`Crud ${Actions.GetByType}`, async () => {
     const mockType = "Перша страва";
     const result = await Database.GetByType({ type: mockType });
@@ -74,20 +88,6 @@ describe("Crud", () => {
     expect(Array.isArray(result)).toBeTruthy;
     expect(result).toEqual(expect.arrayContaining(typeMock));
   });
-  test(`Crud ${Actions.GetById}`, async () => {
-    const id = "3";
-    const result = await Database.GetById({ id: id });
-    expect(Array.isArray(result)).toBeTruthy;
-    const mock = [
-      {
-        id: 3,
-        name: "Суп",
-        type: "Перша страва",
-        cost: "12000",
-      },
-    ];
-    expect(result).toEqual(expect.arrayContaining(mock));
-  });
   test(`Crud ${Actions.Insert}`, async () => {
     const insertMock = {
       name: "Торт",
@@ -106,7 +106,6 @@ describe("Crud", () => {
     const resultUpdate = await Database.Insert(updateMock);
     expect(resultUpdate.message).toContain("Update: Success");
   });
-
   test(`Crud ${Actions.Update}`, async () => {
     const id = "2";
     const oldMock = [
@@ -142,7 +141,6 @@ describe("Crud", () => {
     expect(Array.isArray(resultAfterUpdate)).toBeTruthy;
     expect(resultAfterUpdate).toEqual(updateMockResult);
   });
-
   test(`Crud ${Actions.Delete}`, async () => {
     const mock = [
       {
@@ -163,6 +161,42 @@ describe("Crud", () => {
     );
 
     const afterDeleteResult = await Database.Get();
+    expect(afterDeleteResult).not.toEqual(expect.arrayContaining(mock));
+  });
+  test(`Crud ${Actions.AddType}`, async () => {
+    const mock = 
+      {
+        type: "Мок"
+      };
+    const addResult = await Database.AddType(mock);
+    expect(addResult.message).toContain("Insert: Success");
+    expect(Number(addResult.id)).not.toBeNaN;
+  });
+  test(`Crud ${Actions.DeleteType}`, async () => {
+    const mock = [
+      {
+        type: "Напої",
+      },
+      {
+        type: "Перша страва",
+      },
+      {
+        type: "Мок",
+      },
+    ];
+    const mockType = 
+    {
+      type: "Мок"
+    };
+    const beforeDeleteResult = await Database.GetTypes();
+    expect(Array.isArray(beforeDeleteResult)).toBeTruthy;
+    expect(beforeDeleteResult).toEqual(expect.arrayContaining(mock));
+
+    const deleteResult = await Database.DeleteType(mockType);
+    expect(deleteResult.message).toContain(
+      "Delete: Success, 1 types were affected"
+    );
+    const afterDeleteResult = await Database.GetTypes();
     expect(afterDeleteResult).not.toEqual(expect.arrayContaining(mock));
   });
 });

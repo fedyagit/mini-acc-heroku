@@ -46,7 +46,7 @@ export const GetTypes = async (): Promise<RecordInput[] | Message> => {
   return result;
 };
 
-export const AddTypes = async ({
+export const AddType = async ({
   type
 }: RecordInput): Promise<Message> => {
   const db = OpenConnection();

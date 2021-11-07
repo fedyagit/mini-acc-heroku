@@ -23,7 +23,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       return res.status(200).json(result);
     }
     case Actions.AddType: {
-      const result = await Database.AddTypes({type});
+      const result = await Database.AddType({type});
       return res.status(200).json(result);
     }
     case Actions.Insert: {
