@@ -9,6 +9,7 @@ import fs from "fs";
 const headerHeight = 16;
 const wrapWidth = 58;
 const heightStep = 4;
+const footerHeight = 24;
 const isTest = process.env.NODE_ENV === "test";
 
 const getName = (date: Array<string>): CheckDate => {
@@ -53,7 +54,7 @@ const CalculateCheckHeight = (check: any) => {
         wrapWidth
       ).length;
   });
-  return (checkHeight += 20);
+  return (checkHeight += footerHeight);
 };
 
 const getTotal = (check: any) => {
@@ -70,7 +71,7 @@ const addHeader = (doc: jsPDF, id: string | null) => {
   doc.text("СМАЧНА ЗУСТРІЧ", 29, 8, {
     align: "center",
   });
-  doc.text("################", 29, 12, { align: "center" });
+  doc.text("##################", 29, 12, { align: "center" });
   if (id) doc.text(`ЧЕК N ${id}`, 29, 16, { align: "center" });
   return doc;
 };
@@ -208,8 +209,9 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
       });
       const total = getTotal(formatedCheck);
       const dates = getName(formatedCheck.dateFromTrans);
-      doc.text("ВСЬОГО:", 2, (step += heightStep));
+      doc.text("СУМА:", 2, (step += heightStep));
       doc.text(total, 56, step, { align: "right" });
+      doc.text("##################", 29, step += heightStep, { align: "center" });
       doc.text("ДЯКУЄМО ЗА ПОКУПКУ", 29, (step += heightStep * 2), {
         align: "center",
       });
