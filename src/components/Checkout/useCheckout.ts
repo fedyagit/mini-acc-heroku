@@ -57,11 +57,11 @@ const useCheckout: Function = (): IUseCheckout => {
   const getDate = () => {
     const date = new Date();
     return {
-      fullDate: `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`,
-      dayDate: `${date.getDate()}-${date.getMonth()}-${date.getFullYear()}`,
+      fullDate: `${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}-${date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()}-${date.getFullYear()}-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`,
+      dayDate: `${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}-${date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()}-${date.getFullYear()}`,
     };
   };
-
+  
   const handleTransaction = async () => {
     const res = await fetch("/api/check?action=Add", {
       method: "post",
