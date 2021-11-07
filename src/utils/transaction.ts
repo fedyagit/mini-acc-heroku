@@ -19,8 +19,7 @@ const getName = (date: Array<string>): CheckDate => {
 };
 
 const strToNum = (str: string): number => {
-  return Math.round(Number(str)) / 100
-  ;
+  return Math.round(Number(str)) / 100;
 };
 
 const isTest = process.env.NODE_ENV === "test";
@@ -111,16 +110,16 @@ const CalculateCheckHeight = (check: any) => {
         wrapWidth
       ).length;
   });
-  console.log(strToNum(check.costsFromTrans[0]).toFixed(2))
+  console.log(strToNum(check.costsFromTrans[0]).toFixed(2));
   return (checkHeight += 4);
 };
 
-const addHeader = (doc: jsPDF, id: string) => {
+const addHeader = (doc: jsPDF, id: string | null) => {
   doc.text("СМАЧНА ЗУСТРІЧ", 29, 8, {
     align: "center",
   });
   doc.text("################", 29, 12, { align: "center" });
-  doc.text(`ЧЕК N ${id}`, 29, 16, { align: "center" });
+  if (id) doc.text(`ЧЕК N ${id}`, 29, 16, { align: "center" });
   return doc;
 };
 
@@ -145,16 +144,16 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
       doc.setFont("TypeWriter");
       doc.setFontSize(12);
       let step = headerHeight;
-      addHeader(doc, id);
+      addHeader(doc, id ?? null);
       formatedCheck.itemsFromTrans.map((item: string, index: number) => {
         doc.splitTextToSize(item, wrapWidth).map((str: string) => {
           doc.text(str, 2, (step += heightStep));
         });
         doc
           .splitTextToSize(
-            `${strToNum(formatedCheck.costsFromTrans[index]).toFixed(2)}x${
-              Number(formatedCheck.sizesFromTrans[index])
-            }=${(
+            `${strToNum(formatedCheck.costsFromTrans[index]).toFixed(
+              2
+            )}x${Number(formatedCheck.sizesFromTrans[index])}=${(
               strToNum(formatedCheck.costsFromTrans[index]) *
               Number(formatedCheck.sizesFromTrans[index])
             ).toFixed(2)}`,
@@ -165,7 +164,7 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
           });
       });
       const dates = getName(formatedCheck.dateFromTrans);
-      doc.text("ДЯКУЄМО ЗА ПОКУПКУ", 29, (step += heightStep*2), {
+      doc.text("ДЯКУЄМО ЗА ПОКУПКУ", 29, (step += heightStep * 2), {
         align: "center",
       });
       doc.text(dates.checkDate, 29, (step += heightStep), {
