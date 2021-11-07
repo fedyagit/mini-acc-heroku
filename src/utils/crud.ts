@@ -46,6 +46,23 @@ export const GetTypes = async (): Promise<RecordInput[] | Message> => {
   return result;
 };
 
+export const AddTypes = async ({
+  type
+}: RecordInput): Promise<Message> => {
+  const db = OpenConnection();
+  const result: Message = await db("Types")
+    .insert({
+      type: type,
+    })
+    .then((data) => {
+      return { message: `Insert: Success, ID:${data}`, id: String(data) };
+    })
+    .catch((err) => {
+      return { message: `There was an error in Insert operation: ${err}` };
+    });
+  return result;
+};
+
 const GetItem = async ({
   name,
   type,

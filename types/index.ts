@@ -6,6 +6,7 @@ export enum Actions {
   Insert = "Insert",
   Update = "Update",
   Delete = "Delete",
+  AddType = "AddType",
 }
 
 export enum TransacationActions {
