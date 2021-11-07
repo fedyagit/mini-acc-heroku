@@ -34,6 +34,10 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       const result = await Database.Delete({ id });
       return res.status(200).json(result)
     }
+    case Actions.DeleteType: {
+      const result = await Database.DeleteType({ type });
+      return res.status(200).json(result)
+    }
     default:
       return res
         .status(200)

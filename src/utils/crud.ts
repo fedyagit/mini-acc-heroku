@@ -184,3 +184,17 @@ export const Delete = async ({ id }: RecordInput): Promise<Message> => {
     });
   return result;
 };
+
+export const DeleteType = async ({ type }: RecordInput): Promise<Message> => {
+  const db = OpenConnection();
+  const result: Message = await db("Types")
+    .where("type", type)
+    .delete()
+    .then((data) => {
+      return { message: `Delete: Success, ${data} types were affected` };
+    })
+    .catch((err) => {
+      return { message: `There was an error in Delete operation: ${err}` };
+    });
+  return result;
+};

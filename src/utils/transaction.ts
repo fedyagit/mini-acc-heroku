@@ -4,6 +4,7 @@ import open from "open";
 import "../fonts/typewriter";
 import knex from "knex";
 import { CheckDate, Message, TransactionInput } from "types";
+import fs from 'fs';
 
 const headerHeight = 16;
 const wrapWidth = 58;
@@ -170,6 +171,14 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
       doc.text(dates.checkDate, 29, (step += heightStep), {
         align: "center",
       });
+
+      const checksDir = path.resolve(
+        `checks`
+      );
+      if (!fs.existsSync(checksDir)){
+        fs.mkdirSync(checksDir);
+    }
+
       doc.save(dates.fileDate);
       open(dates.fileDate);
     }

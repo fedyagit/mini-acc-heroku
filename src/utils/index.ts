@@ -1,4 +1,4 @@
-import { AddTypes, Get, GetById, GetByType, GetTypes, Delete, Update, Insert } from "./crud";
+import { AddTypes, Get, GetById, GetByType, GetTypes, Delete, DeleteType, Update, Insert } from "./crud";
 export const Database = {
   AddTypes,
   Get,
@@ -6,6 +6,7 @@ export const Database = {
   GetByType,
   GetTypes,
   Delete,
+  DeleteType,
   Update,
   Insert,
 };
