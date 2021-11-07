@@ -4,6 +4,7 @@ import open from "open";
 import "../fonts/typewriter";
 import knex from "knex";
 import { CheckDate, Message, TransactionInput } from "types";
+import fs from 'fs';
 
 const headerHeight = 16;
 const wrapWidth = 58;
@@ -110,7 +111,6 @@ const CalculateCheckHeight = (check: any) => {
         wrapWidth
       ).length;
   });
-  console.log(strToNum(check.costsFromTrans[0]).toFixed(2));
   return (checkHeight += 4);
 };
 
@@ -126,7 +126,6 @@ const addHeader = (doc: jsPDF, id: string | null) => {
 export const PrintCheck = async ({ id }: TransactionInput) => {
   const checkObj = await GetTransactionById({ id });
   if (Array.isArray(checkObj) && !!checkObj.length) {
-    console.log(checkObj[0]);
     if (
       checkObj[0].items &&
       checkObj[0].costs &&
@@ -170,6 +169,14 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
       doc.text(dates.checkDate, 29, (step += heightStep), {
         align: "center",
       });
+
+      const checksDir = path.resolve(
+        `checks`
+      );
+      if (!fs.existsSync(checksDir)){
+        fs.mkdirSync(checksDir);
+    }
+
       doc.save(dates.fileDate);
       open(dates.fileDate);
     }
