@@ -111,7 +111,6 @@ const CalculateCheckHeight = (check: any) => {
         wrapWidth
       ).length;
   });
-  console.log(strToNum(check.costsFromTrans[0]).toFixed(2));
   return (checkHeight += 4);
 };
 
@@ -127,7 +126,6 @@ const addHeader = (doc: jsPDF, id: string | null) => {
 export const PrintCheck = async ({ id }: TransactionInput) => {
   const checkObj = await GetTransactionById({ id });
   if (Array.isArray(checkObj) && !!checkObj.length) {
-    console.log(checkObj[0]);
     if (
       checkObj[0].items &&
       checkObj[0].costs &&
