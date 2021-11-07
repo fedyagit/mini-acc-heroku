@@ -1,6 +1,5 @@
 import React, { FC, useContext, useEffect, useState } from "react";
 import { MenuContext } from "src/contexts/menuContext";
-import { MENU_ACTION_TYPES } from "src/contexts/menuContext/menu.actions";
 import CheckoutItem from "./CheckoutItem";
 
 const Checkout: FC = () => {
@@ -36,6 +35,14 @@ const Checkout: FC = () => {
               <div className="m-4 flex justify-between text-xl">
                 Всього до оплати:{" "}
                 <span className="font-bold">{totalCheck} UAH</span>
+              </div>
+              <div className="mt-5 flex justify-center">
+                <button
+                  type="button"
+                  className="py-2 w-5/6 px-4 flex justify-center items-center  hover:shadow-xl bg-white border-black text-black focus:ring-0 outline-none transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none rounded-lg "
+                >
+                  Оформити замовлення
+                </button>
               </div>
             </>
           ) : (
