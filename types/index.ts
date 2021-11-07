@@ -14,6 +14,8 @@ export enum TransacationActions {
   Add = "Add",
   GetById = "GetById",
   GetByToday = "GetByToday",
+  GetAll = "GetAll",
+  GetLastId = "GetLastId",
   Print = "Print",
 }
 

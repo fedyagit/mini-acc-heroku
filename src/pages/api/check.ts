@@ -26,6 +26,14 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
       return res.status(200).json(result);
     }
+    case TransacationActions.GetAll: {
+      const result = await Transaction.GetAllTransactions();
+      return res.status(200).json(result);
+    }
+    case TransacationActions.GetLastId: {
+      const result = await Transaction.GetLastTransaction();
+      return res.status(200).json(result);
+    }
     case TransacationActions.Print: {
       const result = await Transaction.PrintCheck({ id });
       return res.status(200).json(result);

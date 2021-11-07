@@ -4,7 +4,7 @@ import open from "open";
 import "../fonts/typewriter";
 import knex from "knex";
 import { CheckDate, Message, TransactionInput } from "types";
-import fs from 'fs';
+import fs from "fs";
 
 const headerHeight = 16;
 const wrapWidth = 58;
@@ -63,6 +63,40 @@ const addHeader = (doc: jsPDF, id: string | null) => {
   doc.text("################", 29, 12, { align: "center" });
   if (id) doc.text(`ЧЕК N ${id}`, 29, 16, { align: "center" });
   return doc;
+};
+
+export const GetAllTransactions = async (): Promise<
+  TransactionInput[] | Message
+> => {
+  const db = OpenConnection();
+  const result: TransactionInput[] | Message = await db
+    .select("*")
+    .from("Transactions")
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      return { message: `There was an error in retrieving data: ${err}` };
+    });
+  return result;
+};
+
+export const GetLastTransaction = async (): Promise<
+  TransactionInput[] | Message
+> => {
+  const db = OpenConnection();
+  const result: TransactionInput[] | Message = await db
+    .select("id")
+    .from("Transactions")
+    .first()
+    .orderBy("id", "desc")
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      return { message: `There was an error in retrieving data: ${err}` };
+    });
+  return result;
 };
 
 export const GetTransactionById = async ({
@@ -139,7 +173,7 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
         dateFromTrans: checkObj[0].transactionDate?.split("-"),
       };
       const checkHeight = CalculateCheckHeight(formatedCheck);
-      var doc = new jsPDF("p", "mm", [58, checkHeight < 58 ? 58 : checkHeight]);
+      var doc = new jsPDF("p", "mm", [58, (checkHeight < 58) ? 58 : checkHeight]);
       doc.setFont("TypeWriter");
       doc.setFontSize(12);
       let step = headerHeight;
@@ -170,12 +204,10 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
         align: "center",
       });
 
-      const checksDir = path.resolve(
-        `checks`
-      );
-      if (!fs.existsSync(checksDir)){
+      const checksDir = path.resolve(`checks`);
+      if (!fs.existsSync(checksDir)) {
         fs.mkdirSync(checksDir);
-    }
+      }
 
       doc.save(dates.fileDate);
       open(dates.fileDate);
