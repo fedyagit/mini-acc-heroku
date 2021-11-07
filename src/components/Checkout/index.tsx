@@ -1,37 +1,47 @@
-import React, { FC, useContext, useEffect, useState } from "react";
-import { MenuContext } from "src/contexts/menuContext";
-import { MENU_ACTION_TYPES } from "src/contexts/menuContext/menu.actions";
-import CheckoutItem from "./CheckoutItem";
+import React, { FC } from "react";
+import CheckoutItem from "../CheckoutItem";
+import DialogComponent from "../Dialog";
+import useCheckout, { IUseCheckout } from "./useCheckout";
 
 const Checkout: FC = () => {
   const {
-    state: { selectedItems },
-    dispatch,
-  } = useContext(MenuContext);
-
-  const [totalCheck, setTotalCheck] = useState<number>(0);
-
-  useEffect(() => {
-    let total: number = 0;
-    selectedItems.map(
-      ({ cost, count }) => (total += (Number(cost) / 100) * count)
-    );
-    setTotalCheck(total);
-  }, [selectedItems]);
+    openTransationModal,
+    selectedItems,
+    transactionId,
+    totalCheck,
+    handleOpenTransactionModal,
+    handleTransaction,
+    handleCloseCancelModal,
+    handleSubmitCancelAction,
+    isOpenCancelModal,
+    openConfirmTransactionModal,
+    handleOpenConfirmTransactionModal,
+  }: IUseCheckout = useCheckout();
 
   return (
     <div className="max-w-7xl px-8">
+      <DialogComponent
+        text={`Чек готовий, замовлення прийняте`}
+        isOpen={openTransationModal}
+        closeModal={handleOpenTransactionModal}
+      />
+      <DialogComponent
+        text={`Оформити замовлення?`}
+        isOpen={openConfirmTransactionModal}
+        closeModal={handleOpenConfirmTransactionModal}
+        submitAction={handleTransaction}
+      />
       <div className="px-4 sm:px-0">
         <div className="border-4 bg-gray-100 border-dashed border-gray-200 rounded-lg min-h-screen">
           {!!selectedItems.length ? (
             <>
               <div className="flex m-5 uppercase justify-center content-center font-bold pt-2">
-                Замовлення №{1}
+                Замовлення №{transactionId}
               </div>
 
               <ul className="mt-2 mx-4">
-                {selectedItems.map(({ ...items }) => (
-                  <CheckoutItem {...items} />
+                {selectedItems.map(({ ...items }, index) => (
+                  <CheckoutItem key={index} {...items} />
                 ))}
               </ul>
               <div className="m-6 mb-2 mt-8 flex justify-between text-xl">
@@ -40,6 +50,7 @@ const Checkout: FC = () => {
               </div>
               <div className="flex justify-center">
                 <button
+                  onClick={handleOpenConfirmTransactionModal}
                   type="button"
                   className="py-2 w-full m-5 mb-2 px-4 flex justify-center items-center  hover:shadow-xl bg-white border-black text-black focus:ring-0 outline-none transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none rounded-lg "
                 >
@@ -47,16 +58,18 @@ const Checkout: FC = () => {
                 </button>
               </div>
               <div
-                onClick={() => {
-                  dispatch({
-                    type: MENU_ACTION_TYPES.REMOVE_ALL_SELECTED_ITEMS,
-                  });
-                }}
+                onClick={handleCloseCancelModal}
                 className="flex cursor-pointer justify-center hover:text-black text-sm text-gray-500"
               >
                 <div className="border-b w-max hover:border-black border-gray-500">
                   Відмінити замовлення
                 </div>
+                <DialogComponent
+                  submitAction={handleSubmitCancelAction}
+                  text="Відмінити замовлення?"
+                  isOpen={isOpenCancelModal}
+                  closeModal={handleCloseCancelModal}
+                />
               </div>
             </>
           ) : (

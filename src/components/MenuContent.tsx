@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { RecordInput } from "types";
-import Checkout from "./Checkout";
+import Checkout from "./Checkout/index";
 import Loading from "./Loading";
 import MenuItems from "./MenuItems";
 
