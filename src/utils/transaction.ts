@@ -9,7 +9,7 @@ import fs from "fs";
 const headerHeight = 16;
 const wrapWidth = 58;
 const heightStep = 4;
-const footerHeight = 24;
+const footerHeight = 28;
 const isTest = process.env.NODE_ENV === "test";
 
 const getName = (date: Array<string>): CheckDate => {
@@ -17,7 +17,7 @@ const getName = (date: Array<string>): CheckDate => {
     fileDate: path.resolve(
       `checks/check-${date[0]}-${date[1]}-${date[2]}-${date[3]}-${date[4]}-${date[5]}.pdf`
     ),
-    checkDate: `${date[0]}.${date[1]}.${date[2]} ${date[3]}-${date[4]}-${date[5]}`,
+    checkDate: `${date[0]}.${date[1]}.${date[2]} ${date[3]}:${date[4]}:${date[5]}`,
   };
 };
 
@@ -204,18 +204,21 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
             wrapWidth
           )
           .map((str: string) => {
-            doc.text(str, 56, (step += heightStep), { align: "right" });
+            doc.text(str, wrapWidth - 2, (step += heightStep), { align: "right" });
           });
       });
       const total = getTotal(formatedCheck);
       const dates = getName(formatedCheck.dateFromTrans);
       doc.text("СУМА:", 2, (step += heightStep));
-      doc.text(total, 56, step, { align: "right" });
+      doc.text(total, wrapWidth - 2, step, { align: "right" });
       doc.text("##################", 29, step += heightStep, { align: "center" });
       doc.text("ДЯКУЄМО ЗА ПОКУПКУ", 29, (step += heightStep * 2), {
         align: "center",
       });
       doc.text(dates.checkDate, 29, (step += heightStep), {
+        align: "center",
+      });
+      doc.text("НЕФІСКАЛЬНИЙ ЧЕК", 29, (step += heightStep), {
         align: "center",
       });
 
