@@ -3,7 +3,13 @@ import { jsPDF } from "jspdf";
 import open from "open";
 import "../fonts/typewriter";
 import knex from "knex";
-import { CheckDate, Message, TransactionInput } from "types";
+import {
+  CheckDate,
+  Message,
+  Pagination,
+  PaginationInput,
+  TransactionInput,
+} from "types";
 import fs from "fs";
 
 const headerHeight = 16;
@@ -11,7 +17,7 @@ const wrapWidth = 58;
 const heightStep = 4;
 const footerHeight = 28;
 const isTest = process.env.NODE_ENV === "test";
-const checksFolder = '../checks';
+const checksFolder = "../checks";
 
 const getName = (date: Array<string>): CheckDate => {
   return {
@@ -61,11 +67,12 @@ const CalculateCheckHeight = (check: any) => {
 const getTotal = (check: any) => {
   let total = 0;
   check.itemsFromTrans.map((item: string, index: number) => {
-    total += strToNum(check.costsFromTrans[index]) *
-    strToNum(check.sizesFromTrans[index])
+    total +=
+      strToNum(check.costsFromTrans[index]) *
+      strToNum(check.sizesFromTrans[index]);
   });
   total *= 100;
-  return (total.toFixed(2));
+  return total.toFixed(2);
 };
 
 const addHeader = (doc: jsPDF, id: string | null) => {
@@ -77,12 +84,33 @@ const addHeader = (doc: jsPDF, id: string | null) => {
   return doc;
 };
 
-export const GetAllTransactions = async (): Promise<
-  TransactionInput[] | Message
-> => {
+export const GetAllTransactions = async ({
+  page,
+  pageSize,
+}: PaginationInput): Promise<Pagination> => {
   const db = OpenConnection();
+  page = page ?? "0";
+  pageSize = pageSize ?? "10";
+
   const result: TransactionInput[] | Message = await db
     .select("*")
+    .offset(Number(page) * Number(pageSize))
+    .limit(Number(pageSize))
+    .from("Transactions")
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      return { message: `There was an error in retrieving data: ${err}` };
+    });
+  const count = await GetTransactionCount();
+  return { result, nbHits: count[0].nbHits };
+};
+
+export const GetTransactionCount = async (): Promise<any | number> => {
+  const db = OpenConnection();
+  const result = await db
+    .count("id as nbHits")
     .from("Transactions")
     .then((data) => {
       return data;
@@ -185,7 +213,7 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
         dateFromTrans: checkObj[0].transactionDate?.split("-"),
       };
       const checkHeight = CalculateCheckHeight(formatedCheck);
-      var doc = new jsPDF("p", "mm", [58, (checkHeight < 58) ? 58 : checkHeight]);
+      var doc = new jsPDF("p", "mm", [58, checkHeight < 58 ? 58 : checkHeight]);
       doc.setFont("TypeWriter");
       doc.setFontSize(12);
       let step = headerHeight;
@@ -205,14 +233,18 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
             wrapWidth
           )
           .map((str: string) => {
-            doc.text(str, wrapWidth - 2, (step += heightStep), { align: "right" });
+            doc.text(str, wrapWidth - 2, (step += heightStep), {
+              align: "right",
+            });
           });
       });
       const total = getTotal(formatedCheck);
       const dates = getName(formatedCheck.dateFromTrans);
       doc.text("СУМА:", 2, (step += heightStep));
       doc.text(total, wrapWidth - 2, step, { align: "right" });
-      doc.text("##################", 29, step += heightStep, { align: "center" });
+      doc.text("##################", 29, (step += heightStep), {
+        align: "center",
+      });
       doc.text("ДЯКУЄМО ЗА ПОКУПКУ", 29, (step += heightStep * 2), {
         align: "center",
       });

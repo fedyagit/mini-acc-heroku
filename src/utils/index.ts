@@ -11,11 +11,12 @@ export const Database = {
   Update,
   Insert,
 };
-import { AddTransaction, GetTransactionById, GetAllTransactions, GetLastTransaction, GetTransactionsByToday, PrintCheck } from "./transaction";
+import { AddTransaction, GetTransactionById, GetAllTransactions, GetTransactionCount, GetLastTransaction, GetTransactionsByToday, PrintCheck } from "./transaction";
 export const Transaction = {
   AddTransaction,
   GetTransactionById,
   GetAllTransactions,
+  GetTransactionCount,
   GetLastTransaction,
   GetTransactionsByToday,
   PrintCheck,
