@@ -33,7 +33,7 @@ interface page {
 
 const Header: FunctionComponent = () => {
   const router = useRouter();
-  const currentPath = router.asPath;
+  const currentPath = router?.asPath;
 
   return (
     <nav className="bg-black">

@@ -21,11 +21,6 @@ const Checkout: FC = () => {
   return (
     <div className="max-w-7xl px-8">
       <DialogComponent
-        text={`Чек готовий, замовлення прийняте`}
-        isOpen={openTransationModal}
-        closeModal={handleOpenTransactionModal}
-      />
-      <DialogComponent
         text={`Оформити замовлення?`}
         isOpen={openConfirmTransactionModal}
         closeModal={handleOpenConfirmTransactionModal}
@@ -33,17 +28,23 @@ const Checkout: FC = () => {
       />
       <div className="px-4 sm:px-0">
         <div className="border-4 bg-gray-100 border-dashed border-gray-200 rounded-lg min-h-screen">
+          <DialogComponent
+            text={`Чек готовий, замовлення прийняте`}
+            isOpen={openTransationModal}
+            closeModal={handleOpenTransactionModal}
+          />
           {!!selectedItems.length ? (
             <>
               <div className="flex m-5 uppercase justify-center content-center font-bold pt-2">
                 Замовлення №{transactionId}
               </div>
-
-              <ul className="mt-2 mx-4">
-                {selectedItems.map(({ ...items }, index) => (
-                  <CheckoutItem key={index} {...items} />
-                ))}
-              </ul>
+              <div>
+                <ul className="mt-2 mx-4">
+                  {selectedItems.map(({ ...items }, index) => (
+                    <CheckoutItem key={index} {...items} />
+                  ))}
+                </ul>
+              </div>
               <div className="m-6 mb-2 mt-8 flex justify-between text-xl">
                 Всього до оплати:{" "}
                 <span className="font-bold">{totalCheck} UAH</span>
@@ -61,7 +62,7 @@ const Checkout: FC = () => {
                 onClick={handleCloseCancelModal}
                 className="flex cursor-pointer justify-center hover:text-black text-sm text-gray-500"
               >
-                <div className="border-b w-max hover:border-black border-gray-500">
+                <div className="border-b mb-4 w-max hover:border-black border-gray-500">
                   Відмінити замовлення
                 </div>
                 <DialogComponent

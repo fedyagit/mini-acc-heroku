@@ -57,11 +57,25 @@ const useCheckout: Function = (): IUseCheckout => {
   const getDate = () => {
     const date = new Date();
     return {
-      fullDate: `${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}-${date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()}-${date.getFullYear()}-${date.getHours()}-${date.getMinutes()}-${date.getSeconds()}`,
-      dayDate: `${date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}-${date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()}-${date.getFullYear()}`,
+      fullDate: `${
+        date.getDate() < 10 ? "0" + date.getDate() : date.getDate()
+      }-${
+        date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
+      }-${date.getFullYear()}-${
+        date.getHours() < 10 ? "0" + date.getHours() : date.getHours()
+      }-${
+        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
+      }-${
+        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()
+      }`,
+      dayDate: `${
+        date.getDate() < 10 ? "0" + date.getDate() : date.getDate()
+      }-${
+        date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
+      }-${date.getFullYear()}`,
     };
   };
-  
+
   const handleTransaction = async () => {
     const res = await fetch("/api/check?action=Add", {
       method: "post",
@@ -93,13 +107,14 @@ const useCheckout: Function = (): IUseCheckout => {
         dispatch({
           type: MENU_ACTION_TYPES.REMOVE_ALL_SELECTED_ITEMS,
         });
-        handleOpenTransactionModal();
       } else {
-        handleOpenTransactionModal();
         console.error(response);
       }
     });
     setOpenConfirmTransactionModal(!openConfirmTransactionModal);
+    setTimeout(() => {
+      setTransactionModal(!openTransationModal);
+    }, 1000);
   };
 
   useEffect(() => {
