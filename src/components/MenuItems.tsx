@@ -25,7 +25,7 @@ const MenuItems: FC<RecordInput> = ({ type, name, cost, id }) => {
       <div className="w-4/6">
         <p className="text-gray-400 text-xs">{type}</p>
         <p className="text-black text-lg font-medium mb-2">{name}</p>
-        <p className="text-gray-900 text-xl font-medium">{cost} UAH</p>
+        <p className="text-gray-900 text-xl font-medium">{cost} ГРН</p>
       </div>
     </div>
   );

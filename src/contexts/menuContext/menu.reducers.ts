@@ -4,6 +4,8 @@ import { IMenuState } from "./menu.difinitions";
 
 export const initialState: IMenuState = {
   selectedItems: [],
+  isMenuLoading: true,
+  isCategoriesLoading: true,
 };
 
 export const MenuReducer = (
@@ -65,6 +67,17 @@ export const MenuReducer = (
       return {
         ...state,
         selectedItems: [],
+      };
+
+    case MENU_ACTION_TYPES.SET_MENU_ITEMS_LOADING:
+      return {
+        ...state,
+        isMenuLoading: action.data,
+      };
+    case MENU_ACTION_TYPES.SET_CATEGORIES_LOADING:
+      return {
+        ...state,
+        isCategoriesLoading: action.data,
       };
 
     default:
