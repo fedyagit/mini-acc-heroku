@@ -11,11 +11,12 @@ export enum Actions {
   AddType = "AddType",
 }
 
-export enum TransacationActions {
+export enum TransactionActions {
   Add = "Add",
   GetById = "GetById",
   GetByToday = "GetByToday",
   GetAll = "GetAll",
+  GetCount = "GetCount",
   GetLastId = "GetLastId",
   Print = "Print",
 }
@@ -33,6 +34,16 @@ export interface TransactionInput {
   costs?: string;
   sizes?: string;
   transactionDate?: string;
+}
+
+export interface Pagination {
+  result: TransactionInput[] | Message;
+  nbHits: number;
+}
+
+export interface PaginationInput {
+  page: string | string[],
+  pageSize?: string| string[],
 }
 
 export interface CheckDate {

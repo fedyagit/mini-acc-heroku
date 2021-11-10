@@ -1,13 +1,14 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { Transaction } from "@utils";
-import { TransacationActions, TransactionInput } from "types";
+import { TransactionActions, TransactionInput } from "types";
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
   const { action } = req.query;
   const { id, items, costs, sizes, transactionDate }: TransactionInput =
     req.body;
+  const { page, pageSize } = req.query
   switch (action) {
-    case TransacationActions.Add: {
+    case TransactionActions.Add: {
       const result = await Transaction.AddTransaction({
         items,
         costs,
@@ -16,25 +17,29 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
       });
       return res.status(200).json(result);
     }
-    case TransacationActions.GetById: {
+    case TransactionActions.GetById: {
       const result = await Transaction.GetTransactionById({ id });
       return res.status(200).json(result);
     }
-    case TransacationActions.GetByToday: {
+    case TransactionActions.GetByToday: {
       const result = await Transaction.GetTransactionsByToday({
         transactionDate,
       });
       return res.status(200).json(result);
     }
-    case TransacationActions.GetAll: {
-      const result = await Transaction.GetAllTransactions();
+    case TransactionActions.GetAll: {
+      const result = await Transaction.GetAllTransactions({page, pageSize});
       return res.status(200).json(result);
     }
-    case TransacationActions.GetLastId: {
+    case TransactionActions.GetCount: {
+      const result = await Transaction.GetTransactionCount();
+      return res.status(200).json(result);
+    }
+    case TransactionActions.GetLastId: {
       const result = await Transaction.GetLastTransaction();
       return res.status(200).json(result);
     }
-    case TransacationActions.Print: {
+    case TransactionActions.Print: {
       const result = await Transaction.PrintCheck({ id });
       return res.status(200).json(result);
     }
