@@ -36,6 +36,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     case Actions.DeleteType: {
       const result = await Database.DeleteType({ type });
+      await Database.DeleteByType({ type });
       return res.status(200).json(result)
     }
     default:
