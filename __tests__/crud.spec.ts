@@ -199,4 +199,54 @@ describe("Crud", () => {
     const afterDeleteResult = await Database.GetTypes();
     expect(afterDeleteResult).not.toEqual(expect.arrayContaining(mock));
   });
+  test(`Crud ${Actions.DeleteByType}`, async () => {
+    const mockType = "Перша страва";
+    const result = await Database.GetByType({ type: mockType });
+    expect(Array.isArray(result)).toBeTruthy;
+    const mock = [
+      {
+        id: 3,
+        name: "Суп",
+        type: "Перша страва",
+        cost: "12000",
+      },
+      {
+        id: 4,
+        name: "Суп2",
+        type: "Перша страва",
+        cost: "13000",
+      },
+      {
+        id: 5,
+        name: "Суп3",
+        type: "Перша страва",
+        cost: "14000",
+      },
+      {
+        id: 6,
+        name: "Суп4",
+        type: "Перша страва",
+        cost: "15000",
+      },
+      {
+        id: 7,
+        name: "Суп5",
+        type: "Перша страва",
+        cost: "21000",
+      },
+      {
+        id: 8,
+        name: "Суп6",
+        type: "Перша страва",
+        cost: "22000",
+      },
+    ];
+    expect(result).toEqual(expect.arrayContaining(mock));
+    const deleteResult = await Database.DeleteByType({ type: mockType })
+    expect(deleteResult.message).toContain(
+      "Delete: Success, 6 items were affected"
+    );
+    const afterDeleteresult = await Database.GetByType({ type: mockType });
+    expect(afterDeleteresult).toEqual(expect.arrayContaining([]));
+  });
 });

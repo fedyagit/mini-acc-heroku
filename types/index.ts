@@ -7,6 +7,7 @@ export enum Actions {
   Update = "Update",
   Delete = "Delete",
   DeleteType = "DeleteType",
+  DeleteByType = "DeleteByType",
   AddType = "AddType",
 }
 
