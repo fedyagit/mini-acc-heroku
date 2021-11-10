@@ -11,11 +11,12 @@ const wrapWidth = 58;
 const heightStep = 4;
 const footerHeight = 28;
 const isTest = process.env.NODE_ENV === "test";
+const checksFolder = '../checks';
 
 const getName = (date: Array<string>): CheckDate => {
   return {
     fileDate: path.resolve(
-      `checks/check-${date[0]}-${date[1]}-${date[2]}-${date[3]}-${date[4]}-${date[5]}.pdf`
+      `${checksFolder}/check-${date[0]}-${date[1]}-${date[2]}-${date[3]}-${date[4]}-${date[5]}.pdf`
     ),
     checkDate: `${date[0]}.${date[1]}.${date[2]} ${date[3]}:${date[4]}:${date[5]}`,
   };
@@ -222,7 +223,7 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
         align: "center",
       });
 
-      const checksDir = path.resolve(`checks`);
+      const checksDir = path.resolve(checksFolder);
       if (!fs.existsSync(checksDir)) {
         fs.mkdirSync(checksDir);
       }
