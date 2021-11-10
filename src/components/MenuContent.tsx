@@ -69,7 +69,7 @@ const MenuContent: FC = () => {
     <>
       <nav className="flex w-full bg-white shadow-lg flex-wrap items-center justify-between p-4">
         {isCategoriesLoading ? (
-          <Loading />
+         <div className="h-10"></div>
         ) : (
           <div className="ml-7 navbar-menu hidden lg:block w-full">
             {menuCategories?.map(({ type }, index) => (
@@ -78,7 +78,7 @@ const MenuContent: FC = () => {
                 key={index}
                 className={`block cursor-pointer ${
                   selectedCategory === type &&
-                  "border-b-4 bg-gray-300 border-gray-400"
+                  "border-b-4 bg-gray-200 border-gray-300"
                 } lg:inline-block mt-4 lg:mt-0 shadow-md hover:shadow-xl transition ease-in duration-200 p-2 rounded-lg mr-10 text-black hover:text-gray-900`}
               >
                 {type}

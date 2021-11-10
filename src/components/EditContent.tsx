@@ -106,7 +106,7 @@ const EditContent: FC = () => {
     <>
       <nav className="flex w-full bg-white shadow-lg flex-wrap items-center justify-between p-4">
         {isCategoriesLoading ? (
-          <Loading />
+        <div className="h-10"></div>
         ) : (
           <div className="ml-7 navbar-menu hidden lg:flex justify-start content-center w-full">
             <span
