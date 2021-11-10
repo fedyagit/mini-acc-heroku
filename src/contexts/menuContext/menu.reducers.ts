@@ -37,8 +37,7 @@ export const MenuReducer = (
       return {
         ...state,
         selectedItems: state.selectedItems.filter(
-          ({ name, cost }) =>
-            name !== action.data.name && cost !== action.data.cost
+          ({ name, id }) => name !== action.data.name && id !== action.data.id
         ),
       };
 
