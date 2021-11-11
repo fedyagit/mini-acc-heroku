@@ -187,6 +187,7 @@ const DailyResultsContent: FC = () => {
                                   0
                                 ) / 100
                           )
+<<<<<<< HEAD
                           .reduce((acc: number, a) => acc + Number(a), 0)}{" "}
                         ГРН
                       </span>
@@ -233,6 +234,9 @@ const DailyResultsContent: FC = () => {
                                 100
                             ) / 100
                           : 0}{" "}
+=======
+                          .reduce((acc, a) => a && acc && acc + a, 1)}{" "}
+>>>>>>> main
                         ГРН
                       </span>
                     </span>
