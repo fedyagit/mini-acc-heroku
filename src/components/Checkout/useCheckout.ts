@@ -37,7 +37,8 @@ const useCheckout: Function = (): IUseCheckout => {
   useEffect(() => {
     fetch("/api/check?action=GetLastId")
       .then((response) => response.json())
-      .then((json) => setTransactionId(json && json.id ? json.id + 1 : 1));
+
+      .then((json) => setTransactionId(json.id ? json.id + 1: 1));
   }, [selectedItems]);
 
   const handleCloseCancelModal = () => {

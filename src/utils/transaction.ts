@@ -131,6 +131,7 @@ export const GetLastTransaction = async (): Promise<
     .first()
     .orderBy("id", "desc")
     .then((data) => {
+      if (!data) return {}
       return data;
     })
     .catch((err) => {

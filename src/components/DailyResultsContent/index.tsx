@@ -119,7 +119,7 @@ const DailyResultsContent: FC = () => {
                                   </p>
                                 </td>
                                 <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                                  <span className="relative flex px-3 py-1 font-semibold text-green-900 leading-tight">
+                                  <span className="relative flex justify-center content-center px-3 py-1 font-semibold text-green-900 leading-tight">
                                     <span
                                       aria-hidden="true"
                                       className="absolute inset-0 bg-green-200 opacity-50 rounded-full"
@@ -187,6 +187,54 @@ const DailyResultsContent: FC = () => {
                                   0
                                 ) / 100
                           )
+
+                          .reduce((acc: number, a) => acc + Number(a), 0)}{" "}
+                        ГРН
+                      </span>
+                    </span>
+                    <span className="pt-3">
+                      Середній чек:{" "}
+                      <span className="pt-3 cursor-pointer hover:underline font-bold">
+                        {transactions
+                          ?.map(
+                            ({ costs, sizes }) =>
+                              costs &&
+                              sizes &&
+                              costs
+                                ?.split("|")
+                                .reduce(
+                                  (acc: number, a, i) =>
+                                    acc +
+                                    Number(a) * Number(sizes?.split("|")[i]),
+                                  0
+                                ) / 100
+                          )
+                          .reduce((acc: number, a) => acc + Number(a), 0)
+                          ? Math.round(
+                              (transactions
+                                ?.map(
+                                  ({ costs, sizes }) =>
+                                    costs &&
+                                    sizes &&
+                                    costs
+                                      ?.split("|")
+                                      .reduce(
+                                        (acc: number, a, i) =>
+                                          acc +
+                                          Number(a) *
+                                            Number(sizes?.split("|")[i]),
+                                        0
+                                      ) / 100
+                                )
+                                .reduce(
+                                  (acc: number, a) => acc + Number(a),
+                                  0
+                                ) /
+                                transactions?.length) *
+                                100
+                            ) / 100
+                          : 0}{" "}
+
 
                           .reduce((acc: number, a) => acc + Number(a), 0)}{" "}
 
