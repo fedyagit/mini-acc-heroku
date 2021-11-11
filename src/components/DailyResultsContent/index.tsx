@@ -188,7 +188,7 @@ const DailyResultsContent: FC = () => {
                                   0
                                 ) / 100
                           )
-                          .reduce((acc, a) => a && acc && acc + a)}{" "}
+                          .reduce((acc, a) => a && acc && acc + a, 0)}{" "}
                         ГРН
                       </span>
                     </span>
