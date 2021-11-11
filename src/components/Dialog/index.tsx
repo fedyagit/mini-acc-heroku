@@ -28,7 +28,11 @@ const DialogComponent: FC<ModalProps> = ({
     setName(e.currentTarget.value);
   };
   const onChangeCost: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-    setCost(e.currentTarget.value);
+    const re = /^[0-9\b]+$/;
+
+    if (e.target.value === "" || re.test(e.target.value)) {
+      setCost(e.target.value);
+    }
   };
 
   return (
@@ -117,24 +121,36 @@ const DialogComponent: FC<ModalProps> = ({
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                       />
                     </div>
-                    <div className="mb-6">
+                    <div className="mb-6 relative">
                       <label className="block text-gray-700 text-sm font-bold mb-2">
                         Ціна
                       </label>
                       <input
                         value={cost}
+                        maxLength={5}
+                        type="text"
+                        pattern="[0-9]*"
                         onChange={onChangeCost}
                         className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
                       />
+                      <div className="h-6 w-6 text-black opacity-50 absolute right-4 top-9">
+                        ГРН
+                      </div>
                     </div>
                     <div className="flex justify-center content-center">
-                      <button
-                        type="button"
-                        className="inline-flex  w-42 justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                        onClick={() => submitForm(name, cost)}
-                      >
-                        Додати
-                      </button>
+                      {cost === "" || name === "" ? (
+                        <div className="inline-flex cursor-default opacity-50 w-42 justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-green-100 border border-transparent rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500">
+                          Додати
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          className="inline-flex w-42 justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                          onClick={() => submitForm(name, cost)}
+                        >
+                          Додати
+                        </button>
+                      )}
                       <button
                         type="button"
                         className="inline-flex ml-4 w-24 justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-red-100 border border-transparent rounded-md hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
@@ -160,13 +176,19 @@ const DialogComponent: FC<ModalProps> = ({
                       />
                     </div>
                     <div className="flex justify-center content-center">
-                      <button
-                        type="button"
-                        className="inline-flex  w-42 justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
-                        onClick={() => submitFormType(name)}
-                      >
-                        Додати
-                      </button>
+                      {name === "" ? (
+                        <div className="inline-flex cursor-default opacity-50 w-42 justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-green-100 border border-transparent rounded-md focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500">
+                          Додати
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          className="inline-flex w-42 justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
+                          onClick={() => submitFormType(name)}
+                        >
+                          Додати
+                        </button>
+                      )}
                       <button
                         type="button"
                         className="inline-flex ml-4 w-24 justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-red-100 border border-transparent rounded-md hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"

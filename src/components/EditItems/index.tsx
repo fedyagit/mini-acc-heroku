@@ -30,7 +30,11 @@ const EditItems: FC<IEditItems> = ({ isPreview, type, name, cost, id }) => {
   const handleWriteToDb = (name: string, cost: string) => {
     fetch("/api/base?action=Insert", {
       method: "post",
-      body: JSON.stringify({ name: name, cost: cost, type: type }),
+      body: JSON.stringify({
+        name: name,
+        cost: parseInt(cost) * 100,
+        type: type,
+      }),
       headers: { "Content-Type": "application/json" },
     })
       .then((response) => response.json())
