@@ -113,15 +113,15 @@ const MenuContent: FC = () => {
             !isMenuLoading && (
               <div className="mt-52 flex text-center justify-center content-center text-gray-400">
                 В цій категорії немає позицій, їх можна додати в розділі
-                "Змінити меню".
+                &quot;Змінити меню&quot;.
               </div>
             )}
           {!!!menuItems?.length &&
             !!!menuCategories?.length &&
             !isMenuLoading && (
               <div className="mt-52 flex text-center justify-center content-center text-gray-400">
-                Меню немає. Додайте будь ласка категорію в розділі "Змінити
-                меню", і почніть створювати меню.{" "}
+                Меню немає. Додайте будь ласка категорію в розділі &quot;Змінити
+                меню&quot;, і почніть створювати меню.{" "}
               </div>
             )}
         </div>

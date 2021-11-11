@@ -173,7 +173,7 @@ const EditContent: FC = () => {
           {!!!menuCategories?.length && !isMenuLoading && (
             <div className="mt-52 flex text-center justify-center content-center text-gray-400">
               Щоб додати позицію до меню, спочатку потрібно створити категорію.
-              Натисніть "+" в меню зверху.
+              Натисніть &quot;+&quot; в меню зверху.
             </div>
           )}
         </>
