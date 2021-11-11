@@ -1,4 +1,4 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, memo, useContext, useEffect, useState } from "react";
 import { MenuContext } from "src/contexts/menuContext";
 import { MENU_ACTION_TYPES } from "src/contexts/menuContext/menu.actions";
 import { RecordInput } from "types";
@@ -69,7 +69,7 @@ const MenuContent: FC = () => {
     <>
       <nav className="flex w-full bg-white shadow-lg flex-wrap items-center justify-between p-4">
         {isCategoriesLoading ? (
-         <div className="h-10"></div>
+          <div className="h-10"></div>
         ) : (
           <div className="ml-7 navbar-menu hidden lg:block w-full">
             {menuCategories?.map(({ type }, index) => (
@@ -88,31 +88,33 @@ const MenuContent: FC = () => {
         )}
       </nav>
 
-      {isMenuLoading ? (
-        <div className="flex mt-20 m-auto justify-center content-center h-28">
-          <Loading />
+      <div className="flex flex-row flex-wrap w-full">
+        <div
+          style={{ height: "max-content" }}
+          className="m-5 bg-gray-100 flex flex-row flex-wrap flex-1 overflow-auto"
+        >
+          {isMenuLoading ? (
+            <div className="flex mt-20 m-auto justify-center content-center h-28">
+              <Loading />
+            </div>
+          ) : (
+            <>
+              {menuItems?.map((item) => (
+                <MenuItems
+                  key={item.id}
+                  {...{ ...item, cost: Number(item.cost) / 100 }}
+                />
+              ))}
+            </>
+          )}
         </div>
-      ) : (
-        <div className="flex flex-row flex-wrap w-full">
-          <div
-            style={{ height: "max-content" }}
-            className="m-5 bg-gray-100 flex flex-row flex-wrap flex-1 overflow-auto"
-          >
-            {menuItems?.map((item) => (
-              <MenuItems
-                key={item.id}
-                {...{ ...item, cost: Number(item.cost) / 100 }}
-              />
-            ))}
-          </div>
 
-          <div className="m-5 bg-gray-100 flex flex-col flex-1 overflow-auto ">
-            <Checkout />
-          </div>
+        <div className="m-5 bg-gray-100 flex flex-col flex-1 overflow-auto ">
+          <Checkout />
         </div>
-      )}
+      </div>
     </>
   );
 };
 
-export default MenuContent;
+export default memo(MenuContent);

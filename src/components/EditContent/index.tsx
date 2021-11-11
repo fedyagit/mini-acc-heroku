@@ -1,13 +1,15 @@
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, memo, useContext, useEffect, useState } from "react";
 import { MenuContext } from "src/contexts/menuContext";
 import { MENU_ACTION_TYPES } from "src/contexts/menuContext/menu.actions";
 import { RecordInput } from "types";
 import DialogComponent from "../Dialog";
+import EditCategoryItem from "../EditCategoryItem";
 import EditItems from "../EditItems";
 import Loading from "../Loading";
 
 interface menuCategories {
   type: string;
+  id: string;
 }
 
 const EditContent: FC = () => {
@@ -106,7 +108,9 @@ const EditContent: FC = () => {
     <>
       <nav className="flex w-full bg-white shadow-lg flex-wrap items-center justify-between p-4">
         {isCategoriesLoading ? (
-          <div className="h-10"></div>
+          <div className="h-10 flex items-center w-full justify-center">
+            <Loading />
+          </div>
         ) : (
           <div className="ml-7 navbar-menu hidden lg:flex justify-start content-center w-full">
             <span
@@ -135,37 +139,16 @@ const EditContent: FC = () => {
                 />
               </svg>
             </span>
-            {menuCategories?.map(({ type }, index) => (
-              <span
-                onClick={() => setCategoryHandler(type)}
-                key={index}
-                className={`block cursor-pointer ${
-                  selectedCategory === type &&
-                  "border-b-4 bg-gray-200 border-gray-300"
-                } lg:inline-block relative mt-4 lg:mt-0 shadow-md hover:shadow-xl transition ease-in duration-200 p-2 rounded-lg mr-10 text-black hover:text-gray-900`}
-              >
-                <button
-                  onClick={() => handleRemoveFromDb(type)}
-                  className="h-6 w-6 bg-white rounded-full text-red-500 absolute z-20 -right-3 -top-3"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                    />
-                  </svg>
-                </button>
-                {type}
-              </span>
-            ))}
+            {selectedCategory &&
+              menuCategories?.map(({ type }, index) => (
+                <EditCategoryItem
+                  key={type + index}
+                  type={type}
+                  selectedCategory={selectedCategory}
+                  handleSet={() => setCategoryHandler(type)}
+                  handleRemove={() => handleRemoveFromDb(type)}
+                />
+              ))}
           </div>
         )}
       </nav>
@@ -194,4 +177,4 @@ const EditContent: FC = () => {
   );
 };
 
-export default EditContent;
+export default memo(EditContent);

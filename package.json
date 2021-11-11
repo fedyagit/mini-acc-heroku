@@ -1,13 +1,17 @@
 {
   "name": "mini-app",
   "private": true,
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "export": "next export && next-export-api",
     "start": "next start",
     "lint": "next lint",
-    "test": "cross-env NODE_ENV=test copyfiles --flat ./__tests__/mdbt.db ./db && jest --verbose --detectOpenHandles"
+    "test": "cross-env NODE_ENV=test copyfiles --flat ./__tests__/mdbt.db ./db && jest --verbose --detectOpenHandles",
+    "heroku-postbuild": "npm run build"
   },
   "dependencies": {
     "@headlessui/react": "^1.4.1",

@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { MenuContext } from "src/contexts/menuContext";
 import { MENU_ACTION_TYPES } from "src/contexts/menuContext/menu.actions";
 import { IMenuItem } from "types";
+import { getDate } from "../utils";
 
 export interface IUseCheckout {
   openTransationModal: boolean;
@@ -52,28 +53,6 @@ const useCheckout: Function = (): IUseCheckout => {
 
   const handleOpenTransactionModal = () => {
     setTransactionModal(!openTransationModal);
-  };
-
-  const getDate = () => {
-    const date = new Date();
-    return {
-      fullDate: `${
-        date.getDate() < 10 ? "0" + date.getDate() : date.getDate()
-      }-${
-        date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
-      }-${date.getFullYear()}-${
-        date.getHours() < 10 ? "0" + date.getHours() : date.getHours()
-      }-${
-        date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()
-      }-${
-        date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds()
-      }`,
-      dayDate: `${
-        date.getDate() < 10 ? "0" + date.getDate() : date.getDate()
-      }-${
-        date.getMonth() < 10 ? "0" + date.getMonth() : date.getMonth()
-      }-${date.getFullYear()}`,
-    };
   };
 
   const handleTransaction = async () => {
