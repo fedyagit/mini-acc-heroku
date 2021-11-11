@@ -32,7 +32,7 @@ const EditCategoryItem: FC<IEditCategoryItem> = ({
           }}
           isOpen={isOpenRemoveCategoryItemModal}
           closeModal={handleOpenRemoveCategoryModal}
-          text={`Видалити категорію ${type}?`}
+          text={`Видалити категорію ${type} та усі позиції у цій категорії?`}
         />
         <svg
           xmlns="http://www.w3.org/2000/svg"

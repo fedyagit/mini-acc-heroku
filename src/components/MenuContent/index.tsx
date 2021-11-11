@@ -93,11 +93,12 @@ const MenuContent: FC = () => {
           style={{ height: "max-content" }}
           className="m-5 bg-gray-100 flex flex-row flex-wrap flex-1 overflow-auto"
         >
-          {isMenuLoading ? (
+          {isMenuLoading && (
             <div className="flex mt-20 m-auto justify-center content-center h-28">
               <Loading />
             </div>
-          ) : (
+          )}
+          {menuItems && !isMenuLoading && (
             <>
               {menuItems?.map((item) => (
                 <MenuItems
@@ -107,6 +108,22 @@ const MenuContent: FC = () => {
               ))}
             </>
           )}
+          {!!!menuItems?.length &&
+            !!menuCategories?.length &&
+            !isMenuLoading && (
+              <div className="mt-52 flex text-center justify-center content-center text-gray-400">
+                В цій категорії немає позицій, їх можна додати в розділі
+                "Змінити меню".
+              </div>
+            )}
+          {!!!menuItems?.length &&
+            !!!menuCategories?.length &&
+            !isMenuLoading && (
+              <div className="mt-52 flex text-center justify-center content-center text-gray-400">
+                Меню немає. Додайте будь ласка категорію в розділі "Змінити
+                меню", і почніть створювати меню.{" "}
+              </div>
+            )}
         </div>
 
         <div className="m-5 bg-gray-100 flex flex-col flex-1 overflow-auto ">
