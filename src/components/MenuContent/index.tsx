@@ -2,9 +2,9 @@ import { FC, useContext, useEffect, useState } from "react";
 import { MenuContext } from "src/contexts/menuContext";
 import { MENU_ACTION_TYPES } from "src/contexts/menuContext/menu.actions";
 import { RecordInput } from "types";
-import Checkout from "./Checkout/index";
-import Loading from "./Loading";
-import MenuItems from "./MenuItems";
+import Checkout from "../Checkout/index";
+import Loading from "../Loading";
+import MenuItems from "../MenuItems";
 
 interface menuCategories {
   type: string;

@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import { useReducer } from "react";
 import MenuContent from "src/components/MenuContent";
+
 import { MenuContext } from "src/contexts/menuContext";
 import {
   initialState,

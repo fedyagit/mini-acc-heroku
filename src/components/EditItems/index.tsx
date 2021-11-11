@@ -1,7 +1,7 @@
-import React, { FC, useContext, useEffect, useState } from "react";
+import React, { FC, useContext, useState } from "react";
 import { MenuContext } from "src/contexts/menuContext";
 import { MENU_ACTION_TYPES } from "src/contexts/menuContext/menu.actions";
-import DialogComponent from "./Dialog";
+import DialogComponent from "../Dialog";
 
 interface IEditItems {
   isPreview?: boolean;

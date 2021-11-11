@@ -2,9 +2,9 @@ import { FC, useContext, useEffect, useState } from "react";
 import { MenuContext } from "src/contexts/menuContext";
 import { MENU_ACTION_TYPES } from "src/contexts/menuContext/menu.actions";
 import { RecordInput } from "types";
-import DialogComponent from "./Dialog";
-import EditItems from "./EditItems";
-import Loading from "./Loading";
+import DialogComponent from "../Dialog";
+import EditItems from "../EditItems";
+import Loading from "../Loading";
 
 interface menuCategories {
   type: string;
@@ -106,7 +106,7 @@ const EditContent: FC = () => {
     <>
       <nav className="flex w-full bg-white shadow-lg flex-wrap items-center justify-between p-4">
         {isCategoriesLoading ? (
-        <div className="h-10"></div>
+          <div className="h-10"></div>
         ) : (
           <div className="ml-7 navbar-menu hidden lg:flex justify-start content-center w-full">
             <span
