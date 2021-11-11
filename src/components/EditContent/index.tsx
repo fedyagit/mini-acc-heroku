@@ -106,74 +106,77 @@ const EditContent: FC = () => {
 
   return (
     <>
-      <nav className="flex w-full bg-white shadow-lg flex-wrap items-center justify-between p-4">
-        {isCategoriesLoading ? (
-          <div className="h-10 flex items-center w-full justify-center">
-            <Loading />
-          </div>
-        ) : (
-          <div className="ml-7 navbar-menu hidden lg:flex justify-start content-center w-full">
-            <span
-              onClick={handleAddCategory}
-              className={`h-full cursor-pointer border-b-4 border-gray-300 bg-gray-200 hover:bg-gray-300 opacity-50 text-opacity-75 lg:inline-block shadow-md hover:shadow-xl transition ease-in duration-200 p-2 rounded-lg mr-10 text-gray-800 hover:text-opacity-100`}
-            >
-              <DialogComponent
-                submitFormType={handleWriteToDb}
-                isCategory={true}
-                isOpen={isOpenAddCategoryItemModal}
-                closeModal={handleAddCategory}
-                text={"Додати категорію?"}
-              />
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 4v16m8-8H4"
-                />
-              </svg>
-            </span>
-            {selectedCategory &&
-              menuCategories?.map(({ type }, index) => (
-                <EditCategoryItem
-                  key={type + index}
-                  type={type}
-                  selectedCategory={selectedCategory}
-                  handleSet={() => setCategoryHandler(type)}
-                  handleRemove={() => handleRemoveFromDb(type)}
-                />
-              ))}
-          </div>
-        )}
-      </nav>
-      {isMenuLoading && (
-        <div className="flex mt-20 m-auto justify-center content-center h-28">
+      {isCategoriesLoading || isMenuLoading ? (
+        <div className="flex mt-36 m-auto justify-center content-center h-28">
           <Loading />
         </div>
-      )}
+      ) : (
+        <>
+          <nav className="flex w-full bg-white shadow-lg flex-wrap items-center justify-between p-4">
+            <div className="ml-7 navbar-menu hidden lg:flex justify-start content-center w-full">
+              <span
+                onClick={handleAddCategory}
+                className={`h-full cursor-pointer border-b-4 border-gray-300 bg-gray-200 hover:bg-gray-300 opacity-50 text-opacity-75 lg:inline-block shadow-md hover:shadow-xl transition ease-in duration-200 p-2 rounded-lg mr-10 text-gray-800 hover:text-opacity-100`}
+              >
+                <DialogComponent
+                  submitFormType={handleWriteToDb}
+                  isCategory={true}
+                  isOpen={isOpenAddCategoryItemModal}
+                  closeModal={handleAddCategory}
+                  text={"Додати категорію?"}
+                />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-6 w-6"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 4v16m8-8H4"
+                  />
+                </svg>
+              </span>
+              {selectedCategory &&
+                menuCategories?.map(({ type }, index) => (
+                  <EditCategoryItem
+                    key={type + index}
+                    type={type}
+                    selectedCategory={selectedCategory}
+                    handleSet={() => setCategoryHandler(type)}
+                    handleRemove={() => handleRemoveFromDb(type)}
+                  />
+                ))}
+            </div>
+          </nav>
 
-      {!!menuCategories?.length && !isMenuLoading && (
-        <div className="flex flex-row flex-wrap w-full">
-          <div
-            style={{ height: "max-content" }}
-            className="m-5 bg-gray-100 flex flex-row flex-wrap flex-1 overflow-auto"
-          >
-            <EditItems isPreview={true} type={selectedCategory} />
-            {menuItems?.map((item) => (
-              <EditItems
-                key={item.id}
-                isPreview={false}
-                {...{ ...item, cost: Number(item.cost) / 100 }}
-              />
-            ))}
-          </div>
-        </div>
+          {!!menuCategories?.length && !isMenuLoading && (
+            <div className="flex flex-row flex-wrap w-full">
+              <div
+                style={{ height: "max-content" }}
+                className="m-5 bg-gray-100 flex flex-row flex-wrap flex-1 overflow-auto"
+              >
+                <EditItems isPreview={true} type={selectedCategory} />
+                {menuItems?.map((item) => (
+                  <EditItems
+                    key={item.id}
+                    isPreview={false}
+                    {...{ ...item, cost: Number(item.cost) / 100 }}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+          {!!!menuCategories?.length && !isMenuLoading && (
+            <div className="mt-52 flex text-center justify-center content-center text-gray-400">
+              Щоб додати позицію до меню, спочатку потрібно створити категорію.
+              Натисніть "+" в меню зверху.
+            </div>
+          )}
+        </>
       )}
     </>
   );
