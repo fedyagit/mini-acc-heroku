@@ -1,6 +1,7 @@
 import { FC, useEffect, useState } from "react";
 import { TransactionInput } from "types";
-import Loading from "./Loading";
+import Loading from "../Loading";
+import PrintComponent from "../PrintComponent";
 
 const HistoryContent: FC = () => {
   const [transactions, setTransactions] = useState<TransactionInput[]>();
@@ -33,33 +34,39 @@ const HistoryContent: FC = () => {
                   <tr>
                     <th
                       scope="col"
-                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-bold"
                     >
                       №
                     </th>
                     <th
                       scope="col"
-                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-bold"
                     >
                       Опис
                     </th>
                     <th
                       scope="col"
-                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-bold"
                     >
                       Дата
                     </th>
                     <th
                       scope="col"
-                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-bold"
                     >
                       Час
                     </th>
                     <th
                       scope="col"
-                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-normal"
+                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-bold"
                     >
                       Сумма
+                    </th>
+                    <th
+                      scope="col"
+                      className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-bold"
+                    >
+                      Друк
                     </th>
                   </tr>
                 </thead>
@@ -76,22 +83,23 @@ const HistoryContent: FC = () => {
                                     {id}
                                   </a>
                                 </div>
-                                <div className="ml-3">
-                                  <p className="text-gray-900 whitespace-no-wrap"></p>
-                                </div>
                               </div>
                             </td>
                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                              <p className="text-gray-900 max-w-2xl whitespace-no-wrap">
+                              <div className="text-gray-900 max-w-2xl whitespace-no-wrap">
                                 {items &&
                                   sizes &&
+                                  costs &&
                                   items
-                                    ?.split("|")
+                                    .split("|")
                                     .map(
-                                      (e, i) => `${e} ${sizes.split("|")[i]}шт.`
+                                      (e, i) =>
+                                        `${e} ${
+                                          parseInt(costs.split("|")[i]) / 100
+                                        }грн х${sizes.split("|")[i]}`
                                     )
                                     .join(" | ")}
-                              </p>
+                              </div>
                             </td>
                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                               <p className="text-gray-900 whitespace-no-wrap">
@@ -102,7 +110,7 @@ const HistoryContent: FC = () => {
                               </p>
                             </td>
                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                              <p className="text-gray-900 whitespace-no-wrap">
+                              <p className="text-gray-900 text-center whitespace-no-wrap">
                                 {transactionDate
                                   ?.split("-")
                                   .slice(
@@ -114,23 +122,32 @@ const HistoryContent: FC = () => {
                               </p>
                             </td>
                             <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                              <span className="relative inline-block px-3 py-1 font-semibold text-green-900 leading-tight">
+                              <span className="relative flex px-3 py-1 font-semibold text-green-900 leading-tight">
                                 <span
                                   aria-hidden="true"
                                   className="absolute inset-0 bg-green-200 opacity-50 rounded-full"
                                 ></span>
-                                <span className="relative">
+                                <span className="relative text-center">
                                   {costs &&
+                                    sizes &&
                                     costs
                                       ?.split("|")
                                       .reduce(
-                                        (acc, a) => acc + parseInt(a),
+                                        (acc, a, i) =>
+                                          acc +
+                                          parseInt(a) *
+                                            parseInt(sizes?.split("|")[i]),
                                         0
                                       ) / 100}{" "}
                                   ГРН
                                 </span>
                               </span>
                             </td>
+                            {id && (
+                              <td className="px-5 cursor-pointer py-5 border-b border-gray-200 bg-white text-sm">
+                                <PrintComponent id={id} />
+                              </td>
+                            )}
                           </tr>
                         )
                       )}

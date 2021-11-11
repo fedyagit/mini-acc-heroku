@@ -1,5 +1,5 @@
 import { Dialog, Transition } from "@headlessui/react";
-import { FC, Fragment, useRef, useState } from "react";
+import { FC, Fragment, useState } from "react";
 
 interface ModalProps {
   isOpen: boolean;
@@ -21,8 +21,6 @@ const DialogComponent: FC<ModalProps> = ({
   isCategory,
   submitFormType,
 }) => {
-  const completeButtonRef = useRef(null);
-
   const [name, setName] = useState<string>("");
   const [cost, setCost] = useState<string>("");
 
@@ -36,7 +34,6 @@ const DialogComponent: FC<ModalProps> = ({
   return (
     <Transition appear show={isOpen} as={Fragment}>
       <Dialog
-        initialFocus={completeButtonRef}
         as="div"
         className=" z-50 fixed inset-0 overflow-y-auto"
         onClose={closeModal}
@@ -77,10 +74,9 @@ const DialogComponent: FC<ModalProps> = ({
               >
                 {text}
               </Dialog.Title>
-              {submitAction && !isEdit && (
+              {submitAction && !isEdit && !isCategory && !submitFormType && (
                 <div className="flex justify-center content-center mt-4">
                   <button
-                    ref={completeButtonRef}
                     type="button"
                     className="inline-flex  w-12 justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                     onClick={submitAction}
@@ -88,7 +84,6 @@ const DialogComponent: FC<ModalProps> = ({
                     Так
                   </button>
                   <button
-                    ref={completeButtonRef}
                     type="button"
                     className="inline-flex ml-4 w-12 justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-red-100 border border-transparent rounded-md hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                     onClick={closeModal}
@@ -100,7 +95,6 @@ const DialogComponent: FC<ModalProps> = ({
               {!submitAction && !isEdit && !isCategory && !submitFormType && (
                 <div className="flex justify-center content-center mt-4">
                   <button
-                    ref={completeButtonRef}
                     type="button"
                     className="inline-flex  w-12 justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                     onClick={closeModal}
@@ -135,7 +129,6 @@ const DialogComponent: FC<ModalProps> = ({
                     </div>
                     <div className="flex justify-center content-center">
                       <button
-                        ref={completeButtonRef}
                         type="button"
                         className="inline-flex  w-42 justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                         onClick={() => submitForm(name, cost)}
@@ -143,7 +136,6 @@ const DialogComponent: FC<ModalProps> = ({
                         Додати
                       </button>
                       <button
-                        ref={completeButtonRef}
                         type="button"
                         className="inline-flex ml-4 w-24 justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-red-100 border border-transparent rounded-md hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                         onClick={closeModal}
@@ -169,7 +161,6 @@ const DialogComponent: FC<ModalProps> = ({
                     </div>
                     <div className="flex justify-center content-center">
                       <button
-                        ref={completeButtonRef}
                         type="button"
                         className="inline-flex  w-42 justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-green-100 border border-transparent rounded-md hover:bg-green-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                         onClick={() => submitFormType(name)}
@@ -177,7 +168,6 @@ const DialogComponent: FC<ModalProps> = ({
                         Додати
                       </button>
                       <button
-                        ref={completeButtonRef}
                         type="button"
                         className="inline-flex ml-4 w-24 justify-center px-4 py-2 text-sm font-medium text-gray-900 bg-red-100 border border-transparent rounded-md hover:bg-red-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-blue-500"
                         onClick={closeModal}
