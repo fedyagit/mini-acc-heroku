@@ -11,7 +11,7 @@ export const Database = {
   Update,
   Insert,
 };
-import { AddTransaction, GetTransactionById, GetAllTransactions, GetTransactionCount, GetLastTransaction, GetTransactionsByToday, PrintCheck } from "./transaction";
+import { AddTransaction, GetTransactionById, GetAllTransactions, GetTransactionCount, GetLastTransaction, GetTransactionsByToday, PrintCheck, PrintTodayResult } from "./transaction";
 export const Transaction = {
   AddTransaction,
   GetTransactionById,
@@ -20,4 +20,5 @@ export const Transaction = {
   GetLastTransaction,
   GetTransactionsByToday,
   PrintCheck,
+  PrintTodayResult,
 };
