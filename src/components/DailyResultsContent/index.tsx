@@ -130,7 +130,7 @@ const DailyResultsContent: FC = () => {
                                         costs
                                           ?.split("|")
                                           .reduce(
-                                            (acc, a, i) =>
+                                            (acc: number, a, i) =>
                                               acc +
                                               parseInt(a) *
                                                 parseInt(sizes?.split("|")[i]),
@@ -181,14 +181,13 @@ const DailyResultsContent: FC = () => {
                               costs
                                 ?.split("|")
                                 .reduce(
-                                  (acc, a, i) =>
+                                  (acc: number, a, i) =>
                                     acc +
-                                    parseInt(a) *
-                                      parseInt(sizes?.split("|")[i]),
+                                    Number(a) * Number(sizes?.split("|")[i]),
                                   0
                                 ) / 100
                           )
-                          .reduce((acc, a) => a && acc && acc + a)}{" "}
+                          .reduce((acc: number, a) => acc + Number(a), 0)}{" "}
                         ГРН
                       </span>
                     </span>
