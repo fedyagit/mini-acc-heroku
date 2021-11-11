@@ -82,16 +82,15 @@ const useCheckout: Function = (): IUseCheckout => {
       body: JSON.stringify({ id: res.id }),
       headers: { "Content-Type": "application/json" },
     }).then((response) => {
-      if (response.status === 200) {
-        dispatch({
-          type: MENU_ACTION_TYPES.REMOVE_ALL_SELECTED_ITEMS,
-        });
-      } else {
-        console.error(response);
+      if (response.status !== 200) {
       }
+      console.error(response);
     });
     setOpenConfirmTransactionModal(!openConfirmTransactionModal);
     setTimeout(() => {
+      dispatch({
+        type: MENU_ACTION_TYPES.REMOVE_ALL_SELECTED_ITEMS,
+      });
       setTransactionModal(!openTransationModal);
     }, 1000);
   };
