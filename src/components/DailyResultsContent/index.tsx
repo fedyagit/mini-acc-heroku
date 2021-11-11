@@ -66,7 +66,7 @@ const DailyResultsContent: FC = () => {
                           scope="col"
                           className="px-5 py-3 bg-white  border-b border-gray-200 text-gray-800  text-left text-sm uppercase font-bold"
                         >
-                          Сумма
+                          Сума
                         </th>
                         <th
                           scope="col"
