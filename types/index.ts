@@ -19,6 +19,7 @@ export enum TransactionActions {
   GetCount = "GetCount",
   GetLastId = "GetLastId",
   Print = "Print",
+  PrintToday = "PrintToday",
 }
 
 export interface RecordInput {
@@ -42,8 +43,8 @@ export interface Pagination {
 }
 
 export interface PaginationInput {
-  page: string | string[],
-  pageSize?: string| string[],
+  page: string | string[];
+  pageSize?: string | string[];
 }
 
 export interface CheckDate {
@@ -61,4 +62,12 @@ export interface BaseApiInput extends Action, RecordInput {}
 export interface Message {
   message: string;
   id?: string;
+}
+
+export interface TotalInput {
+  date?: string;
+  creationDate?: string;
+  nbChecks?: string;
+  sum?: string;
+  avg?: string;
 }
