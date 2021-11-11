@@ -152,11 +152,13 @@ const EditContent: FC = () => {
           </div>
         )}
       </nav>
-      {isMenuLoading ? (
+      {isMenuLoading && (
         <div className="flex mt-20 m-auto justify-center content-center h-28">
           <Loading />
         </div>
-      ) : (
+      )}
+
+      {!!menuCategories?.length && !isMenuLoading && (
         <div className="flex flex-row flex-wrap w-full">
           <div
             style={{ height: "max-content" }}
