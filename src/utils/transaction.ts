@@ -18,7 +18,7 @@ const headerHeight = 16;
 const wrapWidth = 58;
 const wrapCenter = wrapWidth / 2;
 const heightStep = 4;
-const footerHeight = 28;
+const footerHeight = 32;
 const isTest = process.env.NODE_ENV === "test";
 const checksFolder = "../checks";
 const reportsFolder = "../reports";
@@ -266,7 +266,7 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
         dateFromTrans: checkObj[0].transactionDate?.split("-"),
       };
       const checkHeight = CalculateCheckHeight(formatedCheck);
-      var doc = new jsPDF("p", "mm", [58, checkHeight < 58 ? 58 : checkHeight]);
+      var doc = new jsPDF("p", "mm", [wrapWidth, checkHeight < wrapWidth ? wrapWidth : checkHeight]);
       doc.setFont("TypeWriter");
       doc.setFontSize(12);
       let step = headerHeight;
@@ -299,6 +299,9 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
         align: "center",
       });
       doc.text("ДЯКУЄМО ЗА ПОКУПКУ", wrapCenter, (step += heightStep * 2), {
+        align: "center",
+      });
+      doc.text("ГАРНОГО ДНЯ!", wrapCenter, (step += heightStep), {
         align: "center",
       });
       doc.text(dates.checkDate, wrapCenter, (step += heightStep), {
