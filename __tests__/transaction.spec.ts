@@ -36,6 +36,36 @@ describe("Transaction", () => {
     const result = await Transaction.GetAllTransactions({ page, pageSize });
     expect(result).toEqual(mock);
   });
+  test(TransactionActions.GetRange, async () => {
+    const mock = {
+      result: [
+        {
+          id: 1,
+          items: "Кава|Чай|Суп3",
+          costs: "4000|2000|14000",
+          sizes: "1|1|2",
+          transactionDate: "06-10-2021-18-33-12",
+        },
+        {
+          id: 2,
+          items: "Кава|Чай|Суп3",
+          costs: "4000|2000|14000",
+          sizes: "1|1|2",
+          transactionDate: "07-10-2021-18-33-12",
+        },
+      ],
+      nbHits: 2,
+    };
+    const page = "0";
+    const pageSize = "10";
+    const fromDate = "06-10-2021-0-0-0";
+    const toDate = "07-10-2021-23-59-59";
+    const result = await Transaction.GetDateRangeTransactions(
+      { page, pageSize },
+      { fromDate, toDate }
+    );
+    expect(result).toEqual(mock);
+  });
   test(TransactionActions.GetByToday, async () => {
     const mock = [
       {
@@ -53,13 +83,27 @@ describe("Transaction", () => {
     expect(Array.isArray(result)).toBeTruthy;
     expect(result).toEqual(expect.arrayContaining(mock));
   });
-  test(TransactionActions.GetByToday, async () => {
+  test(TransactionActions.GetCount, async () => {
     const mock = [
       {
-        "nbHits": 3
+        nbHits: 3,
       },
     ];
     const result = await Transaction.GetTransactionCount();
+    expect(result).toEqual(expect.arrayContaining(mock));
+  });
+  test(TransactionActions.GetRangeCount, async () => {
+    const mock = [
+      {
+        nbHits: 2,
+      },
+    ];
+    const fromDate = "06-10-2021-0-0-0";
+    const toDate = "07-10-2021-23-59-59";
+    const result = await Transaction.GetTransactionRangeCount({
+      fromDate,
+      toDate,
+    });
     expect(result).toEqual(expect.arrayContaining(mock));
   });
   test(TransactionActions.Add, async () => {
