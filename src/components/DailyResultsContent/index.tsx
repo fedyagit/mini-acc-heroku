@@ -1,12 +1,86 @@
 import { FC, memo, useEffect, useState } from "react";
 import { TransactionInput } from "types";
+import DialogComponent from "../Dialog";
 import Loading from "../Loading";
 import PrintComponent from "../PrintComponent";
 import { getDate } from "../utils";
 
+interface IDailyResults {
+  totalCheckouts: number;
+  totalCheckoutsSum: number;
+  avgCheck: number;
+}
+
 const DailyResultsContent: FC = () => {
   const [transactions, setTransactions] = useState<TransactionInput[]>();
   const [loading, setLoading] = useState<boolean>(true);
+  const [openConfirmPrintDailyCheck, setOpenConfirmDailyCheck] =
+    useState<boolean>(false);
+
+  const [dailyResults, setDailyResults] = useState<IDailyResults>({
+    totalCheckouts: 0,
+    totalCheckoutsSum: 0,
+    avgCheck: 0,
+  });
+
+  const [openSuccessModal, setSuccessModal] = useState<boolean>(false);
+
+  const handleOpenSuccessModal = () => {
+    setSuccessModal(!openSuccessModal);
+  };
+
+  const handleOpenConfirmPrintDailyChecks = () => {
+    setOpenConfirmDailyCheck(!openConfirmPrintDailyCheck);
+  };
+  const handlePrintDailyResultCheck = () => {
+    fetch("/api/check?action=PrintToday", {
+      method: "post",
+      body: JSON.stringify({
+        date: getDate().dayDate,
+        creationDate: getDate().fullDate,
+        nbChecks: dailyResults.totalCheckouts,
+        sum: dailyResults.totalCheckoutsSum,
+        avg: dailyResults.avgCheck,
+      }),
+      headers: { "Content-Type": "application/json" },
+    }).then((response) => {
+      if (response.status !== 200) {
+        console.error(response);
+      }
+      handleOpenConfirmPrintDailyChecks();
+      setTimeout(() => {
+        handleOpenSuccessModal();
+      }, 1000);
+    });
+  };
+
+  useEffect(() => {
+    if (transactions && !!transactions.length) {
+      const totalCheckouts: number = transactions.length;
+      const totalCheckoutsSum: number = transactions
+        ?.map(
+          ({ costs, sizes }) =>
+            costs &&
+            sizes &&
+            costs
+              ?.split("|")
+              .reduce(
+                (acc: number, a, i) =>
+                  acc + Number(a) * Number(sizes?.split("|")[i]),
+                0
+              ) / 100
+        )
+        .reduce((acc: number, a) => acc + Number(a), 0);
+      const avgCheck: number =
+        Math.round((totalCheckoutsSum / totalCheckouts) * 100) / 100;
+
+      setDailyResults({
+        totalCheckouts: totalCheckouts,
+        totalCheckoutsSum: totalCheckoutsSum,
+        avgCheck: avgCheck,
+      });
+    }
+  }, [transactions]);
 
   useEffect(() => {
     fetch("/api/check?action=GetByToday", {
@@ -167,79 +241,37 @@ const DailyResultsContent: FC = () => {
                     <span>
                       Усього замовлень за сьогодні:{" "}
                       <span className="font-bold cursor-pointer hover:underline">
-                        {transactions?.length}
+                        {dailyResults.totalCheckouts}
                       </span>
                     </span>
                     <span className="pt-3">
                       Загальна сума замовлень:{" "}
                       <span className="pt-3 cursor-pointer hover:underline font-bold">
-                        {transactions
-                          ?.map(
-                            ({ costs, sizes }) =>
-                              costs &&
-                              sizes &&
-                              costs
-                                ?.split("|")
-                                .reduce(
-                                  (acc: number, a, i) =>
-                                    acc +
-                                    Number(a) * Number(sizes?.split("|")[i]),
-                                  0
-                                ) / 100
-                          )
-                          .reduce((acc: number, a) => acc + Number(a), 0)}{" "}
-                        ГРН
+                        {dailyResults.totalCheckoutsSum}
                       </span>
                     </span>
                     <span className="pt-3">
                       Середній чек:{" "}
                       <span className="pt-3 cursor-pointer hover:underline font-bold">
-                        {transactions
-                          ?.map(
-                            ({ costs, sizes }) =>
-                              costs &&
-                              sizes &&
-                              costs
-                                ?.split("|")
-                                .reduce(
-                                  (acc: number, a, i) =>
-                                    acc +
-                                    Number(a) * Number(sizes?.split("|")[i]),
-                                  0
-                                ) / 100
-                          )
-                          .reduce((acc: number, a) => acc + Number(a), 0)
-                          ? Math.round(
-                              (transactions
-                                ?.map(
-                                  ({ costs, sizes }) =>
-                                    costs &&
-                                    sizes &&
-                                    costs
-                                      ?.split("|")
-                                      .reduce(
-                                        (acc: number, a, i) =>
-                                          acc +
-                                          Number(a) *
-                                            Number(sizes?.split("|")[i]),
-                                        0
-                                      ) / 100
-                                )
-                                .reduce(
-                                  (acc: number, a) => acc + Number(a),
-                                  0
-                                ) /
-                                transactions?.length) *
-                                100
-                            ) / 100
-                          : 0}{" "}
-                        ГРН
+                        {dailyResults.avgCheck} ГРН
                       </span>
                     </span>
                   </div>
                 </div>
                 <div className="flex justify-center">
+                  <DialogComponent
+                    text={`Сформувати денний звіт в вигляді чеку?`}
+                    isOpen={openConfirmPrintDailyCheck}
+                    closeModal={handleOpenConfirmPrintDailyChecks}
+                    submitAction={handlePrintDailyResultCheck}
+                  />
+                  <DialogComponent
+                    text={`Звіт сформований`}
+                    isOpen={openSuccessModal}
+                    closeModal={handleOpenSuccessModal}
+                  />
                   <button
+                    onClick={handleOpenConfirmPrintDailyChecks}
                     type="button"
                     className="py-2 w-full m-5 mb-2 px-4 flex justify-center items-center  hover:shadow-xl bg-white border-black text-black focus:ring-0 outline-none transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none rounded-lg "
                   >
