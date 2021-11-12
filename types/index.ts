@@ -16,7 +16,9 @@ export enum TransactionActions {
   GetById = "GetById",
   GetByToday = "GetByToday",
   GetAll = "GetAll",
+  GetRange = "GetRange",
   GetCount = "GetCount",
+  GetRangeCount = "GetRangeCount",
   GetLastId = "GetLastId",
   Print = "Print",
   PrintToday = "PrintToday",
@@ -45,6 +47,11 @@ export interface Pagination {
 export interface PaginationInput {
   page: string | string[];
   pageSize?: string | string[];
+}
+
+export interface DateRange {
+  fromDate?: string | string[];
+  toDate?: string | string[];
 }
 
 export interface CheckDate {
