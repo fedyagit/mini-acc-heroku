@@ -39,8 +39,8 @@ const DailyResultsContent: FC = () => {
         date: getDate().dayDate,
         creationDate: getDate().fullDate,
         nbChecks: dailyResults.totalCheckouts,
-        sum: dailyResults.totalCheckoutsSum,
-        avg: dailyResults.avgCheck,
+        sum: dailyResults.totalCheckoutsSum.toFixed(2),
+        avg: dailyResults.avgCheck.toFixed(2),
       }),
       headers: { "Content-Type": "application/json" },
     }).then((response) => {
@@ -245,9 +245,9 @@ const DailyResultsContent: FC = () => {
                       </span>
                     </span>
                     <span className="pt-3">
-                      Загальна сума замовлень:{" "}
+                      Загальна сума замовлень:
                       <span className="pt-3 cursor-pointer hover:underline font-bold">
-                        {dailyResults.totalCheckoutsSum}
+                        {dailyResults.totalCheckoutsSum} ГРН
                       </span>
                     </span>
                     <span className="pt-3">
