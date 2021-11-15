@@ -5,25 +5,36 @@ import "../fonts/typewriter";
 import knex from "knex";
 import {
   CheckDate,
+  DateRange,
   Message,
   Pagination,
   PaginationInput,
+  TotalInput,
   TransactionInput,
 } from "types";
 import fs from "fs";
 
 const headerHeight = 16;
 const wrapWidth = 58;
+const wrapCenter = wrapWidth / 2;
 const heightStep = 4;
-const footerHeight = 28;
+const footerHeight = 32;
 const isTest = process.env.NODE_ENV === "test";
 const checksFolder = "../checks";
+const reportsFolder = "../reports";
 
 const getName = (date: Array<string>): CheckDate => {
   return {
     fileDate: path.resolve(
       `${checksFolder}/check-${date[0]}-${date[1]}-${date[2]}-${date[3]}-${date[4]}-${date[5]}.pdf`
     ),
+    checkDate: `${date[0]}.${date[1]}.${date[2]} ${date[3]}:${date[4]}:${date[5]}`,
+  };
+};
+const getTotalName = (dateStr: string): CheckDate => {
+  const date = dateStr.split("-");
+  return {
+    fileDate: path.resolve(`${reportsFolder}/report-${dateStr}.pdf`),
     checkDate: `${date[0]}.${date[1]}.${date[2]} ${date[3]}:${date[4]}:${date[5]}`,
   };
 };
@@ -76,11 +87,11 @@ const getTotal = (check: any) => {
 };
 
 const addHeader = (doc: jsPDF, id: string | null) => {
-  doc.text("СМАЧНА ЗУСТРІЧ", 29, 8, {
+  doc.text("СМАЧНА ЗУСТРІЧ", wrapCenter, 8, {
     align: "center",
   });
-  doc.text("##################", 29, 12, { align: "center" });
-  if (id) doc.text(`ЧЕК N ${id}`, 29, 16, { align: "center" });
+  doc.text("##################", wrapCenter, 12, { align: "center" });
+  if (id) doc.text(`ЧЕК N ${id}`, wrapCenter, 16, { align: "center" });
   return doc;
 };
 
@@ -107,10 +118,51 @@ export const GetAllTransactions = async ({
   return { result, nbHits: count[0].nbHits };
 };
 
+export const GetDateRangeTransactions = async (
+  { page, pageSize }: PaginationInput,
+  { fromDate, toDate }: DateRange
+): Promise<Pagination> => {
+  const db = OpenConnection();
+  page = page ?? "0";
+  pageSize = pageSize ?? "10";
+  const result: TransactionInput[] | Message = await db
+    .select("*")
+    .whereBetween("transactionDate", [fromDate ?? "", toDate ?? ""])
+    .offset(Number(page) * Number(pageSize))
+    .limit(Number(pageSize))
+    .from("Transactions")
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      return { message: `There was an error in retrieving data: ${err}` };
+    });
+  const count = await GetTransactionRangeCount({ fromDate, toDate });
+  return { result, nbHits: count[0].nbHits };
+};
+
 export const GetTransactionCount = async (): Promise<any | number> => {
   const db = OpenConnection();
   const result = await db
     .count("id as nbHits")
+    .from("Transactions")
+    .then((data) => {
+      return data;
+    })
+    .catch((err) => {
+      return { message: `There was an error in retrieving data: ${err}` };
+    });
+  return result;
+};
+
+export const GetTransactionRangeCount = async ({
+  fromDate,
+  toDate,
+}: DateRange): Promise<any | number> => {
+  const db = OpenConnection();
+  const result = await db
+    .count("id as nbHits")
+    .whereBetween("transactionDate", [fromDate ?? "", toDate ?? ""])
     .from("Transactions")
     .then((data) => {
       return data;
@@ -131,7 +183,7 @@ export const GetLastTransaction = async (): Promise<
     .first()
     .orderBy("id", "desc")
     .then((data) => {
-      if (!data) return {}
+      if (!data) return {};
       return data;
     })
     .catch((err) => {
@@ -214,7 +266,7 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
         dateFromTrans: checkObj[0].transactionDate?.split("-"),
       };
       const checkHeight = CalculateCheckHeight(formatedCheck);
-      var doc = new jsPDF("p", "mm", [58, checkHeight < 58 ? 58 : checkHeight]);
+      var doc = new jsPDF("p", "mm", [wrapWidth, checkHeight < wrapWidth ? wrapWidth : checkHeight]);
       doc.setFont("TypeWriter");
       doc.setFontSize(12);
       let step = headerHeight;
@@ -243,16 +295,19 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
       const dates = getName(formatedCheck.dateFromTrans);
       doc.text("СУМА:", 2, (step += heightStep));
       doc.text(total, wrapWidth - 2, step, { align: "right" });
-      doc.text("##################", 29, (step += heightStep), {
+      doc.text("##################", wrapCenter, (step += heightStep), {
         align: "center",
       });
-      doc.text("ДЯКУЄМО ЗА ПОКУПКУ", 29, (step += heightStep * 2), {
+      doc.text("ДЯКУЄМО ЗА ПОКУПКУ", wrapCenter, (step += heightStep * 2), {
         align: "center",
       });
-      doc.text(dates.checkDate, 29, (step += heightStep), {
+      doc.text("ГАРНОГО ДНЯ!", wrapCenter, (step += heightStep), {
         align: "center",
       });
-      doc.text("НЕФІСКАЛЬНИЙ ЧЕК", 29, (step += heightStep), {
+      doc.text(dates.checkDate, wrapCenter, (step += heightStep), {
+        align: "center",
+      });
+      doc.text("НЕФІСКАЛЬНИЙ ЧЕК", wrapCenter, (step += heightStep), {
         align: "center",
       });
 
@@ -265,4 +320,49 @@ export const PrintCheck = async ({ id }: TransactionInput) => {
       open(dates.fileDate);
     }
   }
+};
+
+export const PrintTodayResult = async ({
+  date,
+  creationDate,
+  nbChecks,
+  sum,
+  avg,
+}: TotalInput) => {
+  if (!creationDate) return;
+  var doc = new jsPDF("p", "mm", [58, 58]);
+  doc.setFont("TypeWriter");
+  doc.setFontSize(12);
+  let step = 4;
+  doc.text("СМАЧНА ЗУСТРІЧ", wrapCenter, (step += heightStep), {
+    align: "center",
+  });
+  doc.text("##################", wrapCenter, (step += heightStep), {
+    align: "center",
+  });
+  doc.text(`ЗВІТ ЗА: ${date}`, wrapCenter, (step += heightStep), {
+    align: "center",
+  });
+  doc.text(`Кількість чеків:`, 2, (step += heightStep + 2));
+  doc.text(`${nbChecks}`, wrapWidth - 2, (step += heightStep), {
+    align: "right",
+  });
+  doc.text(`Загальна сума за день:`, 2, (step += heightStep));
+  doc.text(`${sum}`, wrapWidth - 2, (step += heightStep), {
+    align: "right",
+  });
+  doc.text(`Середня сума чеку:`, 2, (step += heightStep));
+  doc.text(`${avg}`, wrapWidth - 2, (step += heightStep), {
+    align: "right",
+  });
+  const dates = getTotalName(creationDate);
+  doc.text(`${dates.checkDate}`, wrapCenter, (step += heightStep + 2), {
+    align: "center",
+  });
+  const reportsDir = path.resolve(reportsFolder);
+  if (!fs.existsSync(reportsDir)) {
+    fs.mkdirSync(reportsDir);
+  }
+  doc.save(dates.fileDate);
+  open(dates.fileDate);
 };

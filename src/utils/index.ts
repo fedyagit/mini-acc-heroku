@@ -1,4 +1,15 @@
-import { AddType, Get, GetById, GetByType, GetTypes, Delete, DeleteByType, DeleteType, Update, Insert } from "./crud";
+import {
+  AddType,
+  Get,
+  GetById,
+  GetByType,
+  GetTypes,
+  Delete,
+  DeleteByType,
+  DeleteType,
+  Update,
+  Insert,
+} from "./crud";
 export const Database = {
   AddType,
   Get,
@@ -11,13 +22,27 @@ export const Database = {
   Update,
   Insert,
 };
-import { AddTransaction, GetTransactionById, GetAllTransactions, GetTransactionCount, GetLastTransaction, GetTransactionsByToday, PrintCheck } from "./transaction";
+import {
+  AddTransaction,
+  GetTransactionById,
+  GetAllTransactions,
+  GetDateRangeTransactions,
+  GetTransactionCount,
+  GetTransactionRangeCount,
+  GetLastTransaction,
+  GetTransactionsByToday,
+  PrintCheck,
+  PrintTodayResult,
+} from "./transaction";
 export const Transaction = {
   AddTransaction,
   GetTransactionById,
   GetAllTransactions,
+  GetDateRangeTransactions,
   GetTransactionCount,
+  GetTransactionRangeCount,
   GetLastTransaction,
   GetTransactionsByToday,
   PrintCheck,
+  PrintTodayResult,
 };
